@@ -72,8 +72,31 @@ class ApiClient {
     return this.get('/health');
   }
 
+  // File Upload API
+  async uploadFile(file: File): Promise<{
+    success: boolean;
+    data: {
+      fileId: string;
+      fileName: string;
+      message: string;
+      uploadedAt: string;
+    };
+  }> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.post('/api/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
+
   // Chat API
-  async sendMessage(message: string): Promise<{
+  async sendMessage(
+    message: string,
+    fileId?: string
+  ): Promise<{
     success: boolean;
     data?: {
       message: string;
@@ -87,7 +110,11 @@ class ApiClient {
     response?: string; // fallback for different response formats
     sources?: { name: string; url: string }[];
   }> {
-    return this.post('/api/chat', { message });
+    const payload: { message: string; fileId?: string } = { message };
+    if (fileId) {
+      payload.fileId = fileId;
+    }
+    return this.post('/api/chat', payload);
   }
 }
 

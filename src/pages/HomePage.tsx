@@ -15,6 +15,9 @@ import {
   FileText,
   Lock,
   Cloud,
+  Loader2,
+  Paperclip,
+  X,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -36,7 +39,11 @@ export const HomePage: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [fileId, setFileId] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const lastMessageTime = useRef<number>(0);
 
   // Load sidebar state from localStorage
@@ -54,6 +61,18 @@ export const HomePage: React.FC = () => {
     localStorage.setItem('sidebarCollapsed', JSON.stringify(newState));
   };
 
+  const truncateFileName = (fileName: string, maxLength: number = 15): string => {
+    if (fileName.length <= maxLength) return fileName;
+
+    const extension = fileName.split('.').pop();
+    const nameWithoutExt = fileName.slice(0, fileName.lastIndexOf('.'));
+    const availableLength = maxLength - (extension ? extension.length + 1 : 0);
+
+    if (availableLength <= 3) return `...${extension ? '.' + extension : ''}`;
+
+    return `${nameWithoutExt.slice(0, availableLength - 3)}...${extension ? '.' + extension : ''}`;
+  };
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -67,6 +86,69 @@ export const HomePage: React.FC = () => {
       await logout();
     } catch (error) {
       console.error('Logout failed:', error);
+    }
+  };
+
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type (PDF only for now)
+    if (file.type !== 'application/pdf') {
+      const errorMessage: Message = {
+        id: Date.now().toString(),
+        text: '❌ Please upload a PDF file only.',
+        isUser: false,
+        timestamp: new Date(),
+      };
+      setMessages(prev => [...prev, errorMessage]);
+      return;
+    }
+
+    // Validate file size (max 10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      const errorMessage: Message = {
+        id: Date.now().toString(),
+        text: '❌ File size too large. Please upload a file smaller than 10MB.',
+        isUser: false,
+        timestamp: new Date(),
+      };
+      setMessages(prev => [...prev, errorMessage]);
+      return;
+    }
+
+    setUploadedFile(file);
+    setIsUploading(true);
+
+    try {
+      console.log('Uploading file:', file.name);
+      const uploadResponse = await apiClient.uploadFile(file);
+      console.log('File upload response:', uploadResponse);
+
+      if (uploadResponse.success && uploadResponse.data?.fileId) {
+        setFileId(uploadResponse.data.fileId);
+        console.log('File uploaded successfully:', uploadResponse.data.fileName);
+      } else {
+        throw new Error('Upload failed - no file ID received');
+      }
+    } catch (error: unknown) {
+      console.error('File upload error:', error);
+      setUploadedFile(null);
+      setFileId(null);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleFileIconClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleClearFile = () => {
+    setUploadedFile(null);
+    setFileId(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
   };
 
@@ -114,9 +196,12 @@ export const HomePage: React.FC = () => {
     console.log('Sending message to API:', currentInput);
 
     try {
-      // Call the real chat API
-      console.log('Making API call to /api/chat...');
-      const response = await apiClient.sendMessage(currentInput);
+      // Call the real chat API with optional fileId
+      console.log(
+        'Making API call to /api/chat...',
+        fileId ? `with fileId: ${fileId}` : 'without file'
+      );
+      const response = await apiClient.sendMessage(currentInput, fileId || undefined);
       console.log('API response received:', response);
 
       // Extract message from the correct response structure
@@ -135,6 +220,15 @@ export const HomePage: React.FC = () => {
 
       console.log('Bot message with sources:', botMessage);
       setMessages(prev => [...prev, botMessage]);
+
+      // Clear file after successful message send
+      if (fileId) {
+        setUploadedFile(null);
+        setFileId(null);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
+      }
     } catch (error: unknown) {
       console.error('Chat API error:', error);
       const axiosError = error as {
@@ -586,20 +680,67 @@ export const HomePage: React.FC = () => {
             isSidebarCollapsed ? 'left-16' : 'left-64'
           }`}
         >
+          {/* Input Row */}
           <div className="border-t border-gray-200">
             <div className="px-6 py-12 flex space-x-2">
-              <Input
-                value={inputValue}
-                onChange={e => setInputValue(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder={
-                  messages.length === 0
-                    ? 'Ask about weather or upload a file for analysis...'
-                    : 'Type your message...'
-                }
-                className="flex-1 py-3"
-                disabled={isTyping || !isAuthenticated}
-              />
+              <div className="relative flex-1">
+                <Input
+                  value={inputValue}
+                  onChange={e => setInputValue(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  placeholder={
+                    uploadedFile
+                      ? `Ask about ${uploadedFile.name}...`
+                      : messages.length === 0
+                        ? 'Ask about weather or upload a file for analysis...'
+                        : 'Type your message...'
+                  }
+                  className="flex-1 py-3 pr-12"
+                  disabled={isTyping || !isAuthenticated}
+                />
+
+                {/* File Upload Button or File Indicator */}
+                {uploadedFile && !isUploading ? (
+                  <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
+                    <div className="flex items-center space-x-1 bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs">
+                      <FileText className="w-3 h-3" />
+                      <span>{truncateFileName(uploadedFile.name)}</span>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={handleClearFile}
+                        className="h-4 w-4 p-0 text-blue-600 hover:text-blue-800"
+                      >
+                        <X className="w-3 h-3" />
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleFileIconClick}
+                    disabled={isUploading || isTyping}
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 text-gray-400 hover:text-gray-600"
+                  >
+                    {isUploading ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <Paperclip className="w-4 h-4" />
+                    )}
+                  </Button>
+                )}
+
+                {/* Hidden File Input */}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".pdf"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                  disabled={isUploading || isTyping}
+                />
+              </div>
               <Button
                 onClick={handleSendMessage}
                 disabled={!inputValue.trim() || isTyping || !isAuthenticated}
