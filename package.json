@@ -8,6 +8,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "vercel-build": "npm run build",
+    "postinstall": "echo 'Post-install completed'",
     "start": "vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 50",
     "lint:fix": "eslint . --ext ts,tsx --fix",
@@ -17,6 +18,9 @@
     "prepare": "husky",
     "check-port": "lsof -Pi :3000 -sTCP:LISTEN || echo '✅ Port 3000 is available'",
     "kill-port": "lsof -ti:3000 | xargs kill -9 2>/dev/null || echo 'No process found on port 3000'"
+  },
+  "overrides": {
+    "rollup": "^4.21.2"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
