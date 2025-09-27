@@ -27,11 +27,22 @@ const apiClient = axios.create({
 // Add request interceptor to include auth token
 apiClient.interceptors.request.use(config => {
   const token = localStorage.getItem('auth_token');
+  console.log('🔍 API Request:', config.url, 'Token present:', !!token);
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
+    console.log('✅ Authorization header added');
   }
   return config;
 });
+
+// Add response interceptor to log errors
+apiClient.interceptors.response.use(
+  response => response,
+  error => {
+    console.error('❌ API Error:', error.config?.url, error.response?.status, error.response?.data);
+    return Promise.reject(error);
+  }
+);
 
 export class AuthService {
   // Authentication methods
