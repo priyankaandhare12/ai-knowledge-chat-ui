@@ -8,6 +8,7 @@ interface AuthContextType {
   login: () => Promise<void>;
   logout: () => Promise<void>;
   renewToken: () => Promise<void>;
+  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -38,18 +39,36 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     initializeAuth();
   }, []);
 
+  // Listen for focus events to check auth status when user returns to tab
+  useEffect(() => {
+    const handleFocus = async () => {
+      if (!isLoading) {
+        try {
+          const currentUser = await authService.getUser();
+          setUser(currentUser);
+        } catch (error) {
+          console.error('Failed to refresh user on focus:', error);
+        }
+      }
+    };
+
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
+  }, [isLoading]);
+
   // TODO: Set up event listeners for authentication events
   // This would be implemented with the actual oidc-client-ts event system
 
   const login = async () => {
     try {
       setIsLoading(true);
+      // Don't set loading to false here since the page will redirect
       await authService.login();
+      // The page will redirect, so we don't need to handle the response here
     } catch (error) {
       console.error('Login failed:', error);
+      setIsLoading(false); // Only set loading to false if there's an error
       throw error;
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -76,6 +95,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  const refreshUser = async () => {
+    try {
+      const currentUser = await authService.getUser();
+      setUser(currentUser);
+    } catch (error) {
+      console.error('Failed to refresh user:', error);
+      setUser(null);
+    }
+  };
+
   const isAuthenticated = user !== null;
 
   const contextValue: AuthContextType = {
@@ -85,6 +114,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     login,
     logout,
     renewToken,
+    refreshUser,
   };
 
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
