@@ -1,29 +1,7 @@
 // Environment configuration with secure defaults
 export const config = {
   // Server URL
-  apiUrl: import.meta.env.VITE_API_URL || 'http://localhost:5000',
-
-  // Auth0 Configuration - Uses OIDC under the hood
-  auth0: {
-    domain: import.meta.env.VITE_AUTH0_DOMAIN || 'your-tenant.auth0.com',
-    clientId: import.meta.env.VITE_AUTH0_CLIENT_ID || 'your-auth0-client-id',
-    audience: import.meta.env.VITE_AUTH0_AUDIENCE || undefined, // Optional API identifier
-  },
-
-  // OIDC Configuration - Automatically configured for Auth0
-  oidc: {
-    authority: import.meta.env.VITE_AUTH0_DOMAIN
-      ? `https://${import.meta.env.VITE_AUTH0_DOMAIN}`
-      : 'https://your-tenant.auth0.com',
-    clientId: import.meta.env.VITE_AUTH0_CLIENT_ID || 'your-auth0-client-id',
-    redirectUri:
-      import.meta.env.VITE_OIDC_REDIRECT_URI || window.location.origin + '/auth/callback',
-    postLogoutRedirectUri: import.meta.env.VITE_OIDC_POST_LOGOUT_URI || window.location.origin,
-    responseType: 'code',
-    scope: 'openid profile email',
-    automaticSilentRenew: true,
-    includeIdTokenInSilentRenew: true,
-  },
+  apiUrl: import.meta.env.VITE_API_URL || 'http://localhost:3001',
 
   // Domain Restrictions Configuration
   domainRestrictions: {
@@ -71,17 +49,6 @@ export const isEmailDomainAllowed = (email: string): boolean => {
 
 // Validation function to ensure required config is present
 export const validateConfig = () => {
-  const errors: string[] = [];
-
-  // Check Auth0 configuration
-  if (!config.auth0.domain || config.auth0.domain === 'your-tenant.auth0.com') {
-    errors.push('VITE_AUTH0_DOMAIN is not configured');
-  }
-
-  if (!config.auth0.clientId || config.auth0.clientId === 'your-auth0-client-id') {
-    errors.push('VITE_AUTH0_CLIENT_ID is not configured');
-  }
-
   // Log domain restriction status
   if (config.domainRestrictions.enabled) {
     console.log('Domain restrictions enabled:', {
@@ -90,9 +57,5 @@ export const validateConfig = () => {
     });
   }
 
-  if (errors.length > 0 && !config.isDevelopment) {
-    console.warn('Missing Auth0 configuration:', errors);
-  }
-
-  return errors.length === 0;
+  return true;
 };
