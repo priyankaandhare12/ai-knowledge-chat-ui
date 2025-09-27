@@ -78,7 +78,12 @@ export const HomePage: React.FC = () => {
   };
 
   useEffect(() => {
-    scrollToBottom();
+    // Add a small delay to ensure DOM has updated
+    const timeoutId = setTimeout(() => {
+      scrollToBottom();
+    }, 50);
+
+    return () => clearTimeout(timeoutId);
   }, [messages, isTyping]);
 
   const handleLogout = async () => {
@@ -193,6 +198,9 @@ export const HomePage: React.FC = () => {
     setInputValue('');
     setIsTyping(true);
 
+    // Scroll to bottom immediately after adding user message
+    setTimeout(() => scrollToBottom(), 100);
+
     console.log('Sending message to API:', currentInput);
 
     try {
@@ -220,6 +228,9 @@ export const HomePage: React.FC = () => {
 
       console.log('Bot message with sources:', botMessage);
       setMessages(prev => [...prev, botMessage]);
+
+      // Scroll to bottom after adding bot response
+      setTimeout(() => scrollToBottom(), 100);
 
       // Clear file after successful message send
       if (fileId) {
@@ -269,6 +280,9 @@ export const HomePage: React.FC = () => {
       };
 
       setMessages(prev => [...prev, errorMessage]);
+
+      // Scroll to bottom after adding error message
+      setTimeout(() => scrollToBottom(), 100);
     } finally {
       setIsTyping(false);
     }
@@ -339,7 +353,7 @@ export const HomePage: React.FC = () => {
         animate={{
           opacity: 1,
           x: 0,
-          width: isSidebarCollapsed ? '64px' : '256px',
+          width: isSidebarCollapsed ? '64px' : '320px',
         }}
         transition={{ duration: 0.3 }}
         className={`bg-card border-r flex flex-col fixed left-0 top-0 h-full z-10`}
@@ -380,7 +394,7 @@ export const HomePage: React.FC = () => {
           )}
         </div>
 
-        <div className="flex-1 p-4">
+        <div className="flex-1 p-4 overflow-y-auto">
           <h3
             className={`text-sm font-medium text-primary mb-3 overflow-hidden whitespace-nowrap ${
               isSidebarCollapsed ? 'opacity-0' : 'opacity-100'
@@ -474,7 +488,7 @@ export const HomePage: React.FC = () => {
           </div>
         </div>
 
-        <div className="mt-auto border-t py-6">
+        <div className="border-t py-4 bg-background/50 backdrop-blur-sm">
           <div className={`px-4 ${isSidebarCollapsed ? 'flex flex-col items-center gap-4' : ''}`}>
             <div className={`flex items-center ${isSidebarCollapsed ? '' : 'space-x-3 mb-4'}`}>
               <User className="w-8 h-8 p-1.5 bg-primary/10 rounded-full text-primary flex-shrink-0" />
@@ -503,7 +517,7 @@ export const HomePage: React.FC = () => {
       {/* Main Chat Area - Adjusted for fixed sidebar */}
       <div
         className={`flex flex-col flex-1 h-screen transition-all duration-300 ${
-          isSidebarCollapsed ? 'ml-16' : 'ml-64'
+          isSidebarCollapsed ? 'ml-16' : 'ml-80'
         }`}
       >
         {messages.length === 0 ? (
@@ -560,8 +574,8 @@ export const HomePage: React.FC = () => {
           </div>
         ) : (
           // Chat Messages - Scrollable area only
-          <div className="flex-1 overflow-y-auto p-6">
-            <div ref={messagesEndRef} className="space-y-6">
+          <div className="flex-1 overflow-y-auto p-6 pb-32">
+            <div className="space-y-6">
               {messages.map(message => (
                 <div key={message.id} className="message-wrapper">
                   {/* Timestamp */}
@@ -670,6 +684,9 @@ export const HomePage: React.FC = () => {
                   </Card>
                 </motion.div>
               )}
+
+              {/* Scroll target element - adds extra space at bottom */}
+              <div ref={messagesEndRef} className="h-4" />
             </div>
           </div>
         )}
@@ -677,7 +694,7 @@ export const HomePage: React.FC = () => {
         {/* Input Area - Always fixed at bottom */}
         <div
           className={`bg-background fixed bottom-0 right-0 z-20 transition-all duration-300 ${
-            isSidebarCollapsed ? 'left-16' : 'left-64'
+            isSidebarCollapsed ? 'left-16' : 'left-80'
           }`}
         >
           {/* Input Row */}
