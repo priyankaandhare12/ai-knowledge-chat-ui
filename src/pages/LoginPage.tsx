@@ -46,7 +46,7 @@ export const LoginPage: React.FC = () => {
           className="flex justify-center"
         >
           <img
-            src="/logodesign.png"
+            src="../logodesign.png"
             alt="Universal Knowledge Chatbot Logo"
             className="w-32 h-32 object-contain"
           />
