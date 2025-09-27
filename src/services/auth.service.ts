@@ -31,7 +31,7 @@ export class AuthService {
       // Get login URL from backend
       const response = await apiClient.get('/api/auth/login', {
         params: {
-          returnTo: window.location.origin + '/home',
+          returnTo: window.location.origin + '/auth/callback',
         },
       });
 
