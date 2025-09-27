@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { config } from '@/config';
 import { useSearchParams } from 'react-router-dom';
+import logo from '/logodesign.png';
 
 export const LoginPage: React.FC = () => {
   const { login, isLoading } = useAuth();
@@ -46,7 +47,7 @@ export const LoginPage: React.FC = () => {
           className="flex justify-center"
         >
           <img
-            src="../logodesign.png"
+            src={logo}
             alt="Universal Knowledge Chatbot Logo"
             className="w-32 h-32 object-contain"
           />
