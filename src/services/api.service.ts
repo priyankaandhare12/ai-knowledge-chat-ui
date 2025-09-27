@@ -1,5 +1,4 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosError } from 'axios';
-import { authService } from '@/services/auth.service';
 import { config } from '@/config';
 
 class ApiClient {
@@ -8,7 +7,8 @@ class ApiClient {
   constructor() {
     this.client = axios.create({
       baseURL: config.apiUrl,
-      timeout: 10000,
+      timeout: 60000, // Increased to 60 seconds for AI responses
+      withCredentials: true, // Enable cookies for authentication
       headers: {
         'Content-Type': 'application/json',
       },
@@ -18,13 +18,10 @@ class ApiClient {
   }
 
   private setupInterceptors() {
-    // Request interceptor - add auth token
+    // Request interceptor - cookies are automatically included with withCredentials: true
     this.client.interceptors.request.use(
-      async config => {
-        const token = await authService.getAccessToken();
-        if (token) {
-          config.headers.Authorization = `Bearer ${token}`;
-        }
+      config => {
+        // No need to add Authorization header - using HTTP-only cookies
         return config;
       },
       error => Promise.reject(error)
@@ -34,23 +31,10 @@ class ApiClient {
     this.client.interceptors.response.use(
       response => response,
       async (error: AxiosError) => {
+        // For cookie-based auth, don't retry 401 errors automatically
+        // Let the component handle authentication errors
         if (error.response?.status === 401) {
-          // Token might be expired, try to refresh
-          try {
-            await authService.renewToken();
-            // Retry the original request
-            if (error.config) {
-              const token = await authService.getAccessToken();
-              if (token) {
-                error.config.headers.Authorization = `Bearer ${token}`;
-              }
-              return this.client.request(error.config);
-            }
-          } catch (renewError) {
-            // Refresh failed, redirect to login
-            console.error('Token refresh failed:', renewError);
-            // In a real app, you might want to dispatch a logout action here
-          }
+          console.log('Authentication required - user needs to log in');
         }
         return Promise.reject(error);
       }
@@ -63,17 +47,17 @@ class ApiClient {
     return response.data;
   }
 
-  async post<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  async post<T>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> {
     const response = await this.client.post<T>(url, data, config);
     return response.data;
   }
 
-  async put<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  async put<T>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> {
     const response = await this.client.put<T>(url, data, config);
     return response.data;
   }
 
-  async patch<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  async patch<T>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> {
     const response = await this.client.patch<T>(url, data, config);
     return response.data;
   }
@@ -86,6 +70,24 @@ class ApiClient {
   // Health check
   async healthCheck(): Promise<{ status: string; timestamp: string }> {
     return this.get('/health');
+  }
+
+  // Chat API
+  async sendMessage(message: string): Promise<{
+    success: boolean;
+    data?: {
+      message: string;
+      metadata?: {
+        conversationId?: string;
+        timestamp?: string;
+        [key: string]: unknown;
+      };
+      sources?: { name: string; url: string }[];
+    };
+    response?: string; // fallback for different response formats
+    sources?: { name: string; url: string }[];
+  }> {
+    return this.post('/api/chat', { message });
   }
 }
 
