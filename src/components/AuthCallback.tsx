@@ -40,17 +40,30 @@ export const AuthCallback: React.FC = () => {
           return;
         }
 
-        // Wait a moment for the auth context to update after the callback
-        await new Promise(resolve => setTimeout(resolve, 500));
+        // Handle token from URL if present
+        const authStatus = searchParams.get('auth');
+        const token = searchParams.get('token');
 
-        // Refresh the user state in the auth context
-        await refreshUser();
+        if (authStatus === 'success' && token) {
+          // Store the token
+          localStorage.setItem('auth_token', token);
 
-        // Wait another moment to ensure state is updated
-        await new Promise(resolve => setTimeout(resolve, 500));
+          // Clean URL
+          window.history.replaceState({}, '', window.location.pathname);
 
-        // Success - redirect to home
-        navigate('/home', { replace: true });
+          // Refresh the user state
+          await refreshUser();
+
+          // Success - redirect to home
+          navigate('/home', { replace: true });
+        } else if (authStatus === 'success') {
+          // Fallback: refresh user and redirect
+          await refreshUser();
+          navigate('/home', { replace: true });
+        } else {
+          // No success status, something went wrong
+          throw new Error('Authentication callback did not indicate success');
+        }
       } catch (error) {
         console.error('Callback handling error:', error);
         navigate(

@@ -24,6 +24,15 @@ const apiClient = axios.create({
   withCredentials: true,
 });
 
+// Add request interceptor to include auth token
+apiClient.interceptors.request.use(config => {
+  const token = localStorage.getItem('auth_token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 export class AuthService {
   // Authentication methods
   async login(): Promise<void> {
@@ -49,13 +58,15 @@ export class AuthService {
 
   async logout(): Promise<void> {
     try {
+      // Clear local token first
+      localStorage.removeItem('auth_token');
+
       const response = await apiClient.post('/api/auth/logout', {
         returnTo: window.location.origin,
       });
 
       if (response.data.success && response.data.logoutUrl) {
         // Redirect to Auth0 logout - this will clear Auth0 session
-        // Since returnTo is temporarily disabled, we'll handle redirect manually
         window.location.href = response.data.logoutUrl;
 
         // Set a timeout to redirect back to home after logout
@@ -69,15 +80,30 @@ export class AuthService {
       }
     } catch (error) {
       console.error('Logout error:', error);
-      // Fallback: redirect to home
+      // Clear token and redirect to home
+      localStorage.removeItem('auth_token');
       window.location.href = '/';
     }
   }
 
   async handleCallback(): Promise<User | null> {
-    // No longer needed - backend handles the callback
-    // This method is kept for compatibility but does nothing
-    console.log('Callback handled by backend');
+    // Check URL for token from backend redirect
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+    const authStatus = urlParams.get('auth');
+
+    if (token && authStatus === 'success') {
+      // Store token for future API calls
+      localStorage.setItem('auth_token', token);
+
+      // Clean the URL
+      window.history.replaceState({}, '', window.location.pathname);
+
+      // Get user info to verify token works
+      return await this.getUser();
+    }
+
+    console.log('No token found in callback URL');
     return null;
   }
 
