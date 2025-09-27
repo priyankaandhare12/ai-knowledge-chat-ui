@@ -18,10 +18,15 @@ class ApiClient {
   }
 
   private setupInterceptors() {
-    // Request interceptor - cookies are automatically included with withCredentials: true
+    // Request interceptor - add Authorization header if token exists
     this.client.interceptors.request.use(
       config => {
-        // No need to add Authorization header - using HTTP-only cookies
+        const token = localStorage.getItem('auth_token');
+        console.log('🔍 API Service Request:', config.url, 'Token present:', !!token);
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+          console.log('✅ Authorization header added to API service');
+        }
         return config;
       },
       error => Promise.reject(error)
@@ -31,8 +36,13 @@ class ApiClient {
     this.client.interceptors.response.use(
       response => response,
       async (error: AxiosError) => {
-        // For cookie-based auth, don't retry 401 errors automatically
-        // Let the component handle authentication errors
+        console.error(
+          '❌ API Service Error:',
+          error.config?.url,
+          error.response?.status,
+          error.response?.data
+        );
+
         if (error.response?.status === 401) {
           console.log('Authentication required - user needs to log in');
         }
