@@ -14,6 +14,7 @@ import { EnvironmentSetupPage } from '@/pages/docs/EnvironmentSetupPage';
 import { CheatSheetPage } from '@/pages/docs/CheatSheetPage';
 import { FeaturesPage } from '@/pages/docs/FeaturesPage';
 import { ArchitecturePage } from '@/pages/docs/ArchitecturePage';
+import { QAAutomation } from '@/pages/docs/QAAutomation';
 import { validateConfig } from '@/config';
 
 // Create a client for React Query
@@ -65,6 +66,9 @@ function App() {
 
               {/* Architecture */}
               <Route path="architecture" element={<ArchitecturePage />} />
+
+              {/* Development */}
+              <Route path="development/qa-automation" element={<QAAutomation />} />
 
               {/* Fallback for unmatched docs routes */}
               <Route path="*" element={<Navigate to="/docs" replace />} />

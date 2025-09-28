@@ -192,6 +192,11 @@ export const documentationStructure: DocSection[] = [
         path: '/docs/development/testing',
       },
       {
+        id: 'qa-automation',
+        title: 'QA Automation',
+        path: '/docs/development/qa-automation',
+      },
+      {
         id: 'troubleshooting',
         title: 'Troubleshooting',
         path: '/docs/development/troubleshooting',
