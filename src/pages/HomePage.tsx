@@ -388,8 +388,17 @@ export const HomePage: React.FC = () => {
             </div>
           )}
           {isSidebarCollapsed && (
-            <div className="flex justify-center">
+            <div className="flex flex-col items-center space-y-3">
               <Bot className="w-6 h-6 text-primary animate-pulse" />
+              <a
+                href="/docs"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center w-8 h-8 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
+                title="Documentation"
+              >
+                <FileText className="w-4 h-4 text-blue-600" />
+              </a>
             </div>
           )}
         </div>
@@ -479,6 +488,28 @@ export const HomePage: React.FC = () => {
                 )}
               </div>
             </div>
+
+            {/* Quick Links */}
+            {!isSidebarCollapsed && (
+              <div className="mb-4">
+                <h4 className="text-xs font-medium text-muted-foreground mb-2">Quick Links</h4>
+                <a
+                  href="/docs"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 p-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors group"
+                >
+                  <FileText className="w-4 h-4 text-blue-600 flex-shrink-0" />
+                  <div className="text-left flex-1">
+                    <div className="text-sm font-medium text-blue-700 group-hover:text-blue-800">
+                      📚 Documentation
+                    </div>
+                    <div className="text-xs text-blue-600">Complete project guide</div>
+                  </div>
+                  <ExternalLink className="w-3 h-3 text-blue-500 opacity-60 group-hover:opacity-100" />
+                </a>
+              </div>
+            )}
           </div>
         </div>
 
