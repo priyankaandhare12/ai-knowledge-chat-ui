@@ -413,7 +413,7 @@ export const HomePage: React.FC = () => {
 
   useEffect(() => {
     if (!showGithubTooltip) return;
-    const handleClick = (e: MouseEvent) => {
+    const handleClick = () => {
       setShowGithubTooltip(false);
     };
     document.addEventListener('mousedown', handleClick);
