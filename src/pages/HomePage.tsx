@@ -22,7 +22,6 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
-import { AttachedFiles } from '@/components/ui/AttachedFiles';
 import { useAuth } from '@/contexts/AuthContext';
 import { apiClient } from '@/services/api.service';
 
@@ -152,19 +151,6 @@ export const HomePage: React.FC = () => {
 
   const handleFileIconClick = () => {
     fileInputRef.current?.click();
-  };
-
-  const handleRemoveFile = (fileId: string) => {
-    setAttachedFiles(prev => prev.filter(file => file.id !== fileId));
-    if (selectedFileId === fileId) {
-      setSelectedFileId(null);
-    }
-  };
-
-  const handleFileClick = (file: AttachedFile) => {
-    // Create a temporary URL for the PDF file
-    const fileUrl = URL.createObjectURL(file.file);
-    window.open(fileUrl, '_blank');
   };
 
   const handleSendMessage = async () => {
@@ -521,13 +507,6 @@ export const HomePage: React.FC = () => {
           </div>
         </div>
       </motion.div>
-
-      {/* Attached Files */}
-      <AttachedFiles
-        files={attachedFiles}
-        onRemoveFile={handleRemoveFile}
-        onFileClick={handleFileClick}
-      />
 
       {/* Main Chat Area - Adjusted for fixed sidebar */}
       <div
