@@ -17,12 +17,14 @@ import {
   Loader2,
   Paperclip,
   X,
+  Info,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
 import { apiClient } from '@/services/api.service';
+import ReactDOM from 'react-dom';
 
 interface Message {
   id: string;
@@ -43,6 +45,11 @@ export const HomePage: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  // const [showFileAnalysisInfo, setShowFileAnalysisInfo] = useState(false);
+  const [showFileAnalysisTooltip, setShowFileAnalysisTooltip] = useState(false);
+  const fileAnalysisRef = useRef<HTMLDivElement>(null);
+  const [tooltipPosition, setTooltipPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
+
   interface AttachedFile {
     id: string;
     file: File;
@@ -343,6 +350,112 @@ export const HomePage: React.FC = () => {
     });
   };
 
+  const handleFileAnalysisClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (fileAnalysisRef.current) {
+      const rect = fileAnalysisRef.current.getBoundingClientRect();
+      setTooltipPosition({ top: rect.top - 32, left: rect.right + 12 }); // move upward
+    }
+    setShowFileAnalysisTooltip(v => !v);
+  };
+
+  const [showWeatherApiTooltip, setShowWeatherApiTooltip] = useState(false);
+  const weatherApiRef = useRef<HTMLDivElement>(null);
+  const [weatherTooltipPosition, setWeatherTooltipPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
+
+  const handleWeatherApiClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (weatherApiRef.current) {
+      const rect = weatherApiRef.current.getBoundingClientRect();
+      setWeatherTooltipPosition({ top: rect.top - 32, left: rect.right + 12 });
+    }
+    setShowWeatherApiTooltip(v => !v);
+  };
+
+  const [showSlackTooltip, setShowSlackTooltip] = useState(false);
+  const slackRef = useRef<HTMLDivElement>(null);
+  const [slackTooltipPosition, setSlackTooltipPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
+
+  const handleSlackClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (slackRef.current) {
+      const rect = slackRef.current.getBoundingClientRect();
+      setSlackTooltipPosition({ top: rect.top - 32, left: rect.right + 12 });
+    }
+    setShowSlackTooltip(v => !v);
+  };
+
+  const [showJiraTooltip, setShowJiraTooltip] = useState(false);
+  const jiraRef = useRef<HTMLDivElement>(null);
+  const [jiraTooltipPosition, setJiraTooltipPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
+
+  const handleJiraClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (jiraRef.current) {
+      const rect = jiraRef.current.getBoundingClientRect();
+      setJiraTooltipPosition({ top: rect.top - 32, left: rect.right + 12 });
+    }
+    setShowJiraTooltip(v => !v);
+  };
+
+  const [showGithubTooltip, setShowGithubTooltip] = useState(false);
+  const githubRef = useRef<HTMLDivElement>(null);
+  const [githubTooltipPosition, setGithubTooltipPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
+
+  const handleGithubClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (githubRef.current) {
+      const rect = githubRef.current.getBoundingClientRect();
+      setGithubTooltipPosition({ top: rect.top - 32, left: rect.right + 12 });
+    }
+    setShowGithubTooltip(v => !v);
+  };
+
+  useEffect(() => {
+    if (!showGithubTooltip) return;
+    const handleClick = (e: MouseEvent) => {
+      setShowGithubTooltip(false);
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [showGithubTooltip]);
+
+  useEffect(() => {
+    if (!showSlackTooltip) return;
+    const handleClick = () => {
+      setShowSlackTooltip(false);
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [showSlackTooltip]);
+
+  useEffect(() => {
+    if (!showWeatherApiTooltip) return;
+    const handleClick = () => {
+      setShowWeatherApiTooltip(false);
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [showWeatherApiTooltip]);
+
+  useEffect(() => {
+    if (!showFileAnalysisTooltip) return;
+    const handleClick = () => {
+      setShowFileAnalysisTooltip(false);
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [showFileAnalysisTooltip]);
+
+  useEffect(() => {
+    if (!showJiraTooltip) return;
+    const handleClick = () => {
+      setShowJiraTooltip(false);
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [showJiraTooltip]);
+
   return (
     <div className="flex h-screen bg-background">
       {/* Sidebar - Fixed */}
@@ -374,16 +487,16 @@ export const HomePage: React.FC = () => {
         <div className="p-6 border-b bg-gradient-to-b from-primary/5 to-transparent">
           {!isSidebarCollapsed && (
             <div className="space-y-3">
-              <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-                Universal Knowledge Chatbot
-              </h1>
+              <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-transparent bg-clip-text">
+                    OmniMind
+              </h2>
               <div className="inline-flex items-center px-3 py-1 bg-primary/10 rounded-full text-xs text-primary/70 gap-1">
                 <Bot className="w-3 h-3" />
-                Powered by AI
+                Universal Knowledge AI-Assistant
               </div>
-              <p className="text-sm text-muted-foreground/80 leading-relaxed">
-                Ask questions about weather, uploaded files, and get instant answers powered by AI.
-              </p>
+              {/* <p className="text-md font-bold text-grey-500 bg-clip-text">
+                Ask. Discover. Instantly — AI for your world<br />
+              </p> */}
             </div>
           )}
           {isSidebarCollapsed && (
@@ -408,40 +521,120 @@ export const HomePage: React.FC = () => {
               isSidebarCollapsed ? 'opacity-0' : 'opacity-100'
             } transition-opacity duration-200`}
           >
-            Manage Sources
+            Connected Data Sources
           </h3>
 
           {/* Connected Sources Section */}
           {!isSidebarCollapsed && (
             <div className="mb-6">
-              <h4 className="text-xs font-medium text-muted-foreground mb-2">Connected Sources</h4>
+              {/* <h4 className="text-xs font-medium text-muted-foreground mb-2">Connected Sources</h4> */}
               <div className="space-y-2">
-                <div className="bg-accent/20 rounded-lg p-3 text-sm">
+                <div ref={weatherApiRef} className="bg-accent/20 rounded-lg p-3 text-sm cursor-pointer hover:shadow-md transition-shadow relative" onClick={handleWeatherApiClick}>
                   <div className="flex items-center gap-2 mb-1">
                     <Cloud className="w-4 h-4 text-blue-500" />
                     <span className="font-medium">Weather API</span>
                   </div>
-                  <p className="text-xs text-muted-foreground">
-                    Real-time weather information and forecasts
-                  </p>
+                  <p className="text-xs text-muted-foreground">Real-time weather information and forecasts</p>
                 </div>
-                <div className="bg-accent/20 rounded-lg p-3 text-sm">
+                {showWeatherApiTooltip && ReactDOM.createPortal(
+                  <div
+                    style={{ position: 'fixed', top: weatherTooltipPosition.top, left: weatherTooltipPosition.left, zIndex: 9999 }}
+                    className="bg-white border border-gray-200 rounded-xl shadow-lg px-4 py-2 text-sm text-gray-700 whitespace-nowrap flex items-center gap-2"
+                    onClick={e => e.stopPropagation()}
+                  >
+                    <Info className="w-4 h-4 text-blue-500" />
+                    <div className="flex flex-col">
+                      <span>Weather Source: OpenWeatherMap</span>
+                      <span>Real-time weather updates</span>
+                    </div>
+                  </div>,
+                  document.body
+                )}
+                <div ref={fileAnalysisRef} className="bg-accent/20 rounded-lg p-3 text-sm cursor-pointer hover:shadow-md transition-shadow relative" onClick={handleFileAnalysisClick}>
                   <div className="flex items-center gap-2 mb-1">
                     <FileText className="w-4 h-4 text-green-500" />
                     <span className="font-medium">File Analysis</span>
                   </div>
                   <p className="text-xs text-muted-foreground">Upload and analyze documents</p>
                 </div>
-                <div className="bg-accent/20 rounded-lg p-3 text-sm">
+                {showFileAnalysisTooltip && ReactDOM.createPortal(
+                  <div
+                    style={{ position: 'fixed', top: tooltipPosition.top, left: tooltipPosition.left, zIndex: 9999,  }}
+                    className="bg-white border border-gray-200 rounded-xl shadow-lg px-4 py-2 text-sm text-gray-700 whitespace-nowrap flex items-center gap-2"
+                    onClick={e => e.stopPropagation()}
+                  >
+                    <Info className="w-4 h-4 text-blue-500" />
+                    <div className="flex flex-col">
+                      <span>File type: PDF</span>
+                      <span>Upload limit: 1 file</span>
+                    </div>
+                  </div>,
+                  document.body
+                )}
+                <div ref={slackRef} className="bg-accent/20 rounded-lg p-3 text-sm cursor-pointer hover:shadow-md transition-shadow relative" onClick={handleSlackClick}>
                   <div className="flex items-center gap-2 mb-1">
                     <Slack className="w-4 h-4 text-purple-500" />
                     <span className="font-medium">Slack Integration</span>
                   </div>
-                  <p className="text-xs text-muted-foreground">
-                    Search through project discussions
-                  </p>
+                  <p className="text-xs text-muted-foreground">Search through project discussions</p>
                 </div>
-                <div className="bg-accent/20 rounded-lg p-3 text-sm">
+                {showSlackTooltip && ReactDOM.createPortal(
+                  <div
+                    style={{ position: 'fixed', top: slackTooltipPosition.top, left: slackTooltipPosition.left, zIndex: 9999 }}
+                    className="bg-white border border-gray-200 rounded-xl shadow-lg px-4 py-2 text-sm text-gray-700 whitespace-nowrap flex items-center gap-2"
+                    onClick={e => e.stopPropagation()}
+                  >
+                    <Info className="w-4 h-4 text-purple-500" />
+                    <div className="flex flex-col">
+                      <span>Slack Channel: knowlege-chatbot</span>
+                      <span>Real-time Channel Insights</span>
+                    </div>
+                  </div>,
+                  document.body
+                )}
+                <div ref={jiraRef} className="bg-accent/20 rounded-lg p-3 text-sm cursor-pointer hover:shadow-md transition-shadow relative" onClick={handleJiraClick}>
+                  <div className="flex items-center gap-2 mb-1">
+                    <Zap className="w-4 h-4 text-orange-500" />
+                    <span className="font-medium">Jira Integration</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">Project management and issue tracking</p>
+                </div>
+                {showJiraTooltip && ReactDOM.createPortal(
+                  <div
+                    style={{ position: 'fixed', top: jiraTooltipPosition.top, left: jiraTooltipPosition.left, zIndex: 9999 }}
+                    className="bg-white border border-gray-200 rounded-xl shadow-lg px-4 py-2 text-sm text-gray-700 whitespace-nowrap flex items-center gap-2"
+                    onClick={e => e.stopPropagation()}
+                  >
+                    <Info className="w-4 h-4 text-orange-500" />
+                    <div className="flex flex-col">
+                      <span>Jira Project: Tech9 Hackathon</span>
+                      <span>Real-time Jira Project Insights</span>
+                    </div>
+                  </div>,
+                  document.body
+                )}
+                <div ref={githubRef} className="bg-accent/20 rounded-lg p-3 text-sm cursor-pointer hover:shadow-md transition-shadow relative" onClick={handleGithubClick}>
+                  <div className="flex items-center gap-2 mb-1">
+                    <Github className="w-4 h-4 text-gray-700" />
+                    <span className="font-medium">GitHub Integration</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">Code repositories and development workflow</p>
+                </div>
+                {showGithubTooltip && ReactDOM.createPortal(
+                  <div
+                    style={{ position: 'fixed', top: githubTooltipPosition.top, left: githubTooltipPosition.left, zIndex: 9999 }}
+                    className="bg-white border border-gray-200 rounded-xl shadow-lg px-4 py-2 text-sm text-gray-700 whitespace-nowrap flex items-center gap-2"
+                    onClick={e => e.stopPropagation()}
+                  >
+                    <Info className="w-4 h-4 text-gray-700" />
+                    <div className="flex flex-col">
+                      <span>Repositories: Chatbot UI & API</span>
+                      <span>Get Commits Insights</span>
+                    </div>
+                  </div>,
+                  document.body
+                )}
+                {/* <div className="bg-accent/20 rounded-lg p-3 text-sm">
                   <div className="flex items-center gap-2 mb-1">
                     <Zap className="w-4 h-4 text-orange-500" />
                     <span className="font-medium">Jira Integration</span>
@@ -449,16 +642,7 @@ export const HomePage: React.FC = () => {
                   <p className="text-xs text-muted-foreground">
                     Project management and issue tracking
                   </p>
-                </div>
-                <div className="bg-accent/20 rounded-lg p-3 text-sm">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Github className="w-4 h-4 text-gray-700" />
-                    <span className="font-medium">GitHub Integration</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Code repositories and development workflow
-                  </p>
-                </div>
+                </div> */}
               </div>
             </div>
           )}
@@ -509,68 +693,36 @@ export const HomePage: React.FC = () => {
                 </div>
 
                 <div className="space-y-4 mb-12">
-                  <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-transparent bg-clip-text">
-                    Universal Knowledge Chatbot
+                  <h2 className="text-7xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-transparent bg-clip-text">
+                    OmniMind
                   </h2>
                   <div className="inline-flex items-center px-4 py-2 bg-primary/5 rounded-full text-sm text-primary gap-2">
                     <Bot className="w-4 h-4" />
-                    <span className="font-medium">Powered by AI</span>
+                    <span className="font-medium">Universal Knowledge AI-Assistant</span>
                   </div>
                 </div>
 
                 <div className="max-w-4xl mx-auto">
                   <div className="bg-gradient-to-b from-primary/5 to-transparent p-8 rounded-2xl backdrop-blur-sm">
-                    <p className="text-xl text-primary/80 font-medium leading-relaxed mb-8">
-                      Your AI companion for instant weather insights and document analysis. Ask
-                      anything, get intelligent answers.
+                    <p className="text-xl text-primary/80 font-medium leading-relaxed mb-6">
+                      Your AI companion for instant insights from all your connected sources.
                     </p>
-
-                    <div className="grid grid-cols-5 gap-6">
-                      <div className="bg-white/50 p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-primary/10">
-                        <Cloud className="w-8 h-8 text-blue-500 mb-3" />
-                        <div className="font-semibold text-lg mb-2 text-primary">
-                          Weather Updates
-                        </div>
-                        <p className="text-muted-foreground">
-                          Real-time forecasts and weather conditions for any location worldwide
-                        </p>
-                      </div>
-                      <div className="bg-white/50 p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-primary/10">
-                        <FileText className="w-8 h-8 text-green-500 mb-3" />
-                        <div className="font-semibold text-lg mb-2 text-primary">
-                          Document Analysis
-                        </div>
-                        <p className="text-muted-foreground">
-                          Smart document processing with instant insights and summaries
-                        </p>
-                      </div>
-                      <div className="bg-white/50 p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-primary/10">
-                        <Slack className="w-8 h-8 text-purple-500 mb-3" />
-                        <div className="font-semibold text-lg mb-2 text-primary">
-                          Slack Integration
-                        </div>
-                        <p className="text-muted-foreground">
-                          Search through project discussions and team conversations
-                        </p>
-                      </div>
-                      <div className="bg-white/50 p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-primary/10">
-                        <Zap className="w-8 h-8 text-orange-500 mb-3" />
-                        <div className="font-semibold text-lg mb-2 text-primary">
-                          Jira Integration
-                        </div>
-                        <p className="text-muted-foreground">
-                          Project management and issue tracking capabilities
-                        </p>
-                      </div>
-                      <div className="bg-white/50 p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-primary/10">
-                        <Github className="w-8 h-8 text-gray-700 mb-3" />
-                        <div className="font-semibold text-lg mb-2 text-primary">
-                          GitHub Integration
-                        </div>
-                        <p className="text-muted-foreground">
-                          Code repositories and development workflow support
-                        </p>
-                      </div>
+                    <div className="flex flex-wrap gap-4 justify-center items-center mb-2">
+                      <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 text-blue-700 font-medium shadow-sm">
+                        <Cloud className="w-5 h-5" /> Weather
+                      </span>
+                      <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 text-green-700 font-medium shadow-sm">
+                        <FileText className="w-5 h-5" /> Files
+                      </span>
+                      <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-50 text-purple-700 font-medium shadow-sm">
+                        <Slack className="w-5 h-5" /> Slack
+                      </span>
+                      <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-50 text-orange-700 font-medium shadow-sm">
+                        <Zap className="w-5 h-5" /> Jira
+                      </span>
+                      <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-100 text-gray-700 font-medium shadow-sm">
+                        <Github className="w-5 h-5" /> GitHub
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -739,16 +891,16 @@ export const HomePage: React.FC = () => {
 
         {/* Input Area - Always fixed at bottom */}
         <div
-          className={`bg-background fixed bottom-0 right-0 z-20 transition-all duration-300 ${
+          className={`bg-background fixed bottom-0 pt-2 right-0 z-20 transition-all duration-300 ${
             isSidebarCollapsed ? 'left-16' : 'left-80'
-          }`}
+          } min-h-32 `}
         >
           {/* Input Row */}
           <div className="border-t border-gray-200">
-            <div className="px-6 py-4">
+            <div className="p-6"> {/* Increased vertical padding using Tailwind */}
               <div className="relative flex items-center gap-2">
-                <div className="relative flex-1 rounded-xl border border-gray-200 bg-white shadow-sm">
-                  <div className="flex items-center min-h-[44px]">
+                <div className="relative flex-1 rounded-xl border-2 border-blue-500 bg-white shadow-sm">
+                  <div className="flex items-center min-h-1">
                     {/* File Upload Button */}
                     <div className="absolute left-2 top-1/2 -translate-y-1/2">
                       <div className="relative">
@@ -845,12 +997,10 @@ export const HomePage: React.FC = () => {
                         selectedFileId
                           ? `Ask about the uploaded file...`
                           : messages.length === 0
-                            ? 'Ask about weather or upload a file for analysis...'
+                            ? 'Ask anything about connected data sources...'
                             : 'Type your message...'
                       }
-                      className={`w-full py-3 pl-12 pr-4 border-0 focus-visible:ring-0 bg-transparent ${
-                        selectedFileId ? 'placeholder:text-gray-400' : ''
-                      }`}
+                      className={`w-full py-3 pl-12 pr-4  bg-transparent rounded-xl  border-none outline-none focus:border-none focus:outline-none ${selectedFileId ? 'placeholder:text-gray-400' : ''}`}
                       disabled={isTyping || !isAuthenticated}
                     />
                   </div>

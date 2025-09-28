@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { LogIn } from 'lucide-react';
+import { FileText, Key, Bot } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { config } from '@/config';
 import { useSearchParams } from 'react-router-dom';
-import logo from '/logodesign.png';
 
 export const LoginPage: React.FC = () => {
   const { login, isLoading } = useAuth();
@@ -40,7 +39,7 @@ export const LoginPage: React.FC = () => {
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="w-full max-w-md text-center space-y-8">
         {/* Logo */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6 }}
@@ -51,20 +50,33 @@ export const LoginPage: React.FC = () => {
             alt="Universal Knowledge Chatbot Logo"
             className="w-32 h-32 object-contain"
           />
-        </motion.div>
+        </motion.div> */}
+
+        {/* Hero Section */}
+        <div className="text-center mb-8 relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 rounded-full blur-3xl"></div>
+          <Bot className="w-20 h-20 mx-auto text-primary relative animate-float" />
+        </div>
+        <div className="space-y-4 mb-8">
+          <h1 className="text-6xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-transparent bg-clip-text pb-4">OmniMind</h1>
+          <div className="inline-flex items-center px-4 py-2 bg-primary/5 rounded-full text-base text-primary gap-2">
+            <Bot className="w-4 h-4" />
+            <span className="font-medium">Universal Knowledge AI-Assistant</span>
+          </div>
+        </div>
 
         {/* Title */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
           className="space-y-4"
         >
-          <h1 className="text-3xl font-bold text-black">Universal Knowledge Chatbot</h1>
-          <p className="text-lg text-black">
+          <h1 className="text-6xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-transparent bg-clip-text pb-12">OmniMind</h1>
+          <p className="text-lg text-black mb-0">
             Sign in to your account using your organization's SSO
           </p>
-        </motion.div>
+        </motion.div> */}
 
         {/* Error Message */}
         {error && (
@@ -96,7 +108,7 @@ export const LoginPage: React.FC = () => {
               </div>
             ) : (
               <div className="flex items-center justify-center space-x-2">
-                <LogIn className="w-5 h-5" />
+                <Key className="w-5 h-5" />
                 <span>Sign in with SSO</span>
               </div>
             )}
@@ -110,14 +122,16 @@ export const LoginPage: React.FC = () => {
           transition={{ delay: 0.6, duration: 0.6 }}
           className="text-center text-sm text-gray-600 space-y-2"
         >
-          <div>
-            <a
-              href="/docs"
-              className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium"
-            >
-              📚 View Documentation
-            </a>
-          </div>
+          {/* <p>Secure login powered by Auth0</p> */}
+          <a
+            href="/docs"
+            className="inline-flex items-center justify-center text-base lg:text-lg px-4 py-2 rounded-lg bg-blue-50 text-grey-600 hover:text-blue-800 hover:bg-blue-100 transition-colors gap-2 mt-2"
+          >
+            <FileText className="w-5 h-5 text-blue-500" />
+            <span>
+              Need Help? <span className="underline underline-offset-2">View Documentation</span>
+            </span>
+          </a>
         </motion.div>
 
         {/* Development Mode Info */}
