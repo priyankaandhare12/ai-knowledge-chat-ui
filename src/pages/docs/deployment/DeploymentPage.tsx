@@ -18,6 +18,18 @@ export const DeploymentPage: React.FC = () => {
               flexible backend deployment options including Docker containers and serverless
               functions.
             </p>
+
+            <div className="mt-4 p-4 bg-white rounded border border-blue-300">
+              <h3 className="font-semibold mb-2 text-blue-800">🌐 Live Application</h3>
+              <a
+                href="https://ai-knowledge-chat-ui.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:text-blue-800 font-medium underline"
+              >
+                https://ai-knowledge-chat-ui.vercel.app/
+              </a>
+            </div>
           </div>
 
           <h2 className="text-3xl font-semibold mb-6 text-gray-800">
@@ -83,6 +95,64 @@ export const DeploymentPage: React.FC = () => {
   ]
 }`}
                   </pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h2 className="text-3xl font-semibold mb-6 text-gray-800">
+            📋 Step-by-Step Vercel Deployment
+          </h2>
+
+          <div className="space-y-6 mb-8">
+            <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+              <h3 className="text-lg font-semibold mb-4 text-indigo-700">🚀 Deploy from GitHub</h3>
+
+              <div className="space-y-4">
+                <div className="bg-indigo-50 p-4 rounded border border-indigo-200">
+                  <h4 className="font-medium mb-2">1. Import Repository</h4>
+                  <ol className="text-sm text-gray-700 space-y-1 ml-4">
+                    <li>
+                      1. Go to{' '}
+                      <a
+                        href="https://vercel.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 underline"
+                      >
+                        vercel.com
+                      </a>{' '}
+                      and sign in
+                    </li>
+                    <li>2. Click "New Project"</li>
+                    <li>
+                      3. Import:{' '}
+                      <code className="bg-gray-200 px-2 py-1 rounded">
+                        https://github.com/priyankaandhare12/ai-knowledge-chat-ui
+                      </code>
+                    </li>
+                    <li>4. Configure project settings</li>
+                  </ol>
+                </div>
+
+                <div className="bg-green-50 p-4 rounded border border-green-200">
+                  <h4 className="font-medium mb-2">2. Environment Variables</h4>
+                  <p className="text-sm text-gray-700 mb-2">
+                    Add these environment variables in Vercel dashboard:
+                  </p>
+                  <div className="bg-white p-3 rounded border text-sm font-mono">
+                    <div>VITE_AUTH0_DOMAIN=your-domain.auth0.com</div>
+                    <div>VITE_AUTH0_CLIENT_ID=your-client-id</div>
+                    <div>VITE_AUTH0_AUDIENCE=your-api-audience</div>
+                    <div>VITE_API_BASE_URL=your-backend-url</div>
+                  </div>
+                </div>
+
+                <div className="bg-blue-50 p-4 rounded border border-blue-200">
+                  <h4 className="font-medium mb-2">3. Deploy</h4>
+                  <p className="text-sm text-gray-700">
+                    Click "Deploy" and Vercel will automatically build and deploy your application!
+                  </p>
                 </div>
               </div>
             </div>

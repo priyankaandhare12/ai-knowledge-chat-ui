@@ -13,11 +13,27 @@ export const APIReferencePage: React.FC = () => {
 
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6 border border-blue-200 mb-8">
             <h2 className="text-2xl font-semibold mb-4 text-blue-800">📡 API Overview</h2>
-            <p className="text-gray-700">
+            <p className="text-gray-700 mb-4">
               The Knowledge Chatbot API provides RESTful endpoints for chat interactions, file
               processing, external integrations, and user management. All endpoints require
               authentication via JWT tokens.
             </p>
+
+            <div className="bg-white p-4 rounded border border-blue-300 mt-4">
+              <h3 className="font-semibold mb-2 text-blue-800">🔗 Backend Repository</h3>
+              <a
+                href="https://github.com/priyankaandhare12/knowledge-chatbot"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:text-blue-800 underline font-medium"
+              >
+                github.com/priyankaandhare12/knowledge-chatbot
+              </a>
+              <p className="text-sm text-gray-600 mt-1">
+                Complete backend implementation with API endpoints, authentication, and
+                integrations.
+              </p>
+            </div>
           </div>
 
           <h2 className="text-3xl font-semibold mb-6 text-gray-800">🔐 Authentication</h2>

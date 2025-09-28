@@ -127,10 +127,10 @@ lsof -i :PORT_NUMBER`}
 curl http://localhost:3001/api/health
 
 # Check frontend (in browser)
-open http://localhost:3000
+open http://localhost:5173
 
 # Check documentation
-open http://localhost:3000/docs`}
+open http://localhost:5173/docs`}
             </CodeBlock>
 
             <h3 className="text-lg font-medium">Common Issues</h3>

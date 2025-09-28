@@ -11,6 +11,51 @@ export const ProjectGoalsPage: React.FC = () => {
             Knowledge Chatbot development.
           </p>
 
+          <div className="bg-gray-50 rounded-lg p-6 border border-gray-200 mb-8">
+            <h2 className="text-2xl font-semibold mb-4 text-gray-800">📋 Project Information</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h3 className="font-semibold mb-2 text-gray-700">🌐 Live Application</h3>
+                <a
+                  href="https://ai-knowledge-chat-ui.vercel.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-800 underline text-sm"
+                >
+                  ai-knowledge-chat-ui.vercel.app
+                </a>
+              </div>
+              <div>
+                <h3 className="font-semibold mb-2 text-gray-700">📱 Frontend Repository</h3>
+                <a
+                  href="https://github.com/priyankaandhare12/ai-knowledge-chat-ui"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-800 underline text-sm"
+                >
+                  github.com/priyankaandhare12/ai-knowledge-chat-ui
+                </a>
+              </div>
+              <div>
+                <h3 className="font-semibold mb-2 text-gray-700">⚙️ Backend Repository</h3>
+                <a
+                  href="https://github.com/priyankaandhare12/knowledge-chatbot"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-800 underline text-sm"
+                >
+                  github.com/priyankaandhare12/knowledge-chatbot
+                </a>
+              </div>
+              <div>
+                <h3 className="font-semibold mb-2 text-gray-700">🚀 Deployment</h3>
+                <span className="text-sm text-gray-600">
+                  Frontend: Vercel, Backend: Flexible options
+                </span>
+              </div>
+            </div>
+          </div>
+
           <h2 className="text-3xl font-semibold mb-6 text-gray-800">🎯 Primary Goals</h2>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">

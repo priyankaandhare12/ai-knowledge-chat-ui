@@ -118,7 +118,7 @@ PORT=3001
 # =================================
 # FRONTEND INTEGRATION
 # =================================
-FRONTEND_URL=http://localhost:3000
+FRONTEND_URL=http://localhost:5173
 
 # =================================
 # AUTH0 CONFIGURATION
@@ -184,7 +184,7 @@ LOG_FORMAT=combined  # combined, common, dev
 # =================================
 # CORS CONFIGURATION
 # =================================
-CORS_ORIGIN=http://localhost:3000
+CORS_ORIGIN=http://localhost:5173
 CORS_CREDENTIALS=true`}
             </CodeBlock>
           </div>
@@ -362,7 +362,7 @@ npm start
 npm run dev
 
 # Look for:
-# "Local: http://localhost:3000"
+# "Local: http://localhost:5173"
 # No build errors
 # App loads in browser`}
               </CodeBlock>
