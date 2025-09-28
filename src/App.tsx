@@ -148,11 +148,18 @@ function App() {
               }
             />
 
-            {/* Root redirect */}
-            <Route path="/" element={<Navigate to="/home" replace />} />
+            {/* Root redirect - check authentication first */}
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Navigate to="/home" replace />
+                </ProtectedRoute>
+              }
+            />
 
-            {/* Catch-all route */}
-            <Route path="*" element={<Navigate to="/home" replace />} />
+            {/* Catch-all route - redirect to login for safety */}
+            <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </Router>
       </AuthProvider>

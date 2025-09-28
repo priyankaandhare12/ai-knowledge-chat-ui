@@ -5,7 +5,18 @@ export const LogoutPage: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Clear any remaining state and redirect to login after a short delay
+    // Ensure complete logout by clearing all storage
+    localStorage.clear();
+    sessionStorage.clear();
+
+    // Clear any cookies by setting them to expire
+    document.cookie.split(';').forEach(function (c) {
+      document.cookie = c
+        .replace(/^ +/, '')
+        .replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/');
+    });
+
+    // Redirect to login after a short delay
     const timer = setTimeout(() => {
       navigate('/login', { replace: true });
     }, 2000);

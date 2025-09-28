@@ -69,29 +69,45 @@ export class AuthService {
 
   async logout(): Promise<void> {
     try {
-      // Clear all local storage items related to auth
-      localStorage.removeItem('auth_token');
-      localStorage.clear(); // Clear all local storage to be safe
-
-      // Clear session storage as well
+      // Clear all storage immediately to prevent any auth state persistence
+      localStorage.clear();
       sessionStorage.clear();
 
+      // Clear any cookies manually
+      document.cookie.split(';').forEach(function (c) {
+        document.cookie = c
+          .replace(/^ +/, '')
+          .replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/');
+      });
+
+      // Call backend logout endpoint
       const response = await apiClient.post('/api/auth/logout', {
         returnTo: `${window.location.origin}/logout`,
       });
 
       if (response.data.success && response.data.logoutUrl) {
+        console.log('Redirecting to Auth0 logout URL:', response.data.logoutUrl);
         // Force a complete page reload to clear any cached state
         window.location.replace(response.data.logoutUrl);
       } else {
+        console.log('No logout URL received, redirecting to local logout page');
         // Fallback: force redirect to logout page with page reload
         window.location.replace('/logout');
       }
     } catch (error) {
       console.error('Logout error:', error);
-      // Clear all storage and force redirect to logout page
+      // Even if the API call fails, ensure complete cleanup
       localStorage.clear();
       sessionStorage.clear();
+
+      // Clear cookies again
+      document.cookie.split(';').forEach(function (c) {
+        document.cookie = c
+          .replace(/^ +/, '')
+          .replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/');
+      });
+
+      // Force redirect to logout page regardless of API error
       window.location.replace('/logout');
     }
   }
@@ -125,25 +141,61 @@ export class AuthService {
   // User management
   async getUser(): Promise<User | null> {
     try {
+      // Check if we have any auth token first
+      const token = localStorage.getItem('auth_token');
+      if (!token) {
+        console.log('No auth token found, user not authenticated');
+        return null;
+      }
+
       const response = await apiClient.get('/api/auth/user');
 
       if (response.data.success && response.data.authenticated) {
         return response.data.user;
       }
 
+      // If server says not authenticated, clear local storage
+      localStorage.removeItem('auth_token');
       return null;
     } catch (error) {
       console.error('Get user error:', error);
+      // If there's an auth error, clear the token
+      if (
+        axios.isAxiosError(error) &&
+        (error.response?.status === 401 || error.response?.status === 403)
+      ) {
+        localStorage.removeItem('auth_token');
+      }
       return null;
     }
   }
 
   async isAuthenticated(): Promise<boolean> {
     try {
+      // Check local token first
+      const token = localStorage.getItem('auth_token');
+      if (!token) {
+        return false;
+      }
+
       const response = await apiClient.get('/api/auth/status');
-      return response.data.success && response.data.authenticated;
+      const isAuth = response.data.success && response.data.authenticated;
+
+      // If server says not authenticated, clear local storage
+      if (!isAuth) {
+        localStorage.removeItem('auth_token');
+      }
+
+      return isAuth;
     } catch (error) {
       console.error('Auth status check error:', error);
+      // Clear token on auth errors
+      if (
+        axios.isAxiosError(error) &&
+        (error.response?.status === 401 || error.response?.status === 403)
+      ) {
+        localStorage.removeItem('auth_token');
+      }
       return false;
     }
   }
