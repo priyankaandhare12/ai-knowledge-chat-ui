@@ -26,11 +26,24 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const initializeAuth = async () => {
       try {
         setIsLoading(true);
+
+        // Check if we have any auth tokens first
+        const hasToken = localStorage.getItem('auth_token');
+        if (!hasToken) {
+          console.log('No auth token found during initialization');
+          setUser(null);
+          setIsLoading(false);
+          return;
+        }
+
         const currentUser = await authService.getUser();
         setUser(currentUser);
       } catch (error) {
         console.error('Failed to initialize authentication:', error);
         setUser(null);
+        // Clear storage on initialization error
+        localStorage.clear();
+        sessionStorage.clear();
       } finally {
         setIsLoading(false);
       }
@@ -42,19 +55,27 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   // Listen for focus events to check auth status when user returns to tab
   useEffect(() => {
     const handleFocus = async () => {
-      if (!isLoading) {
+      if (!isLoading && user !== null) {
+        // Only refresh user if we currently think a user is logged in
         try {
           const currentUser = await authService.getUser();
-          setUser(currentUser);
+          if (!currentUser) {
+            // If no user found, clear the state
+            setUser(null);
+          } else {
+            setUser(currentUser);
+          }
         } catch (error) {
           console.error('Failed to refresh user on focus:', error);
+          // On error, clear the user state to be safe
+          setUser(null);
         }
       }
     };
 
     window.addEventListener('focus', handleFocus);
     return () => window.removeEventListener('focus', handleFocus);
-  }, [isLoading]);
+  }, [isLoading, user]);
 
   // TODO: Set up event listeners for authentication events
   // This would be implemented with the actual oidc-client-ts event system
@@ -75,10 +96,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const logout = async () => {
     try {
       setIsLoading(true);
-      await authService.logout();
+      // Clear user state immediately
       setUser(null);
+      // Clear any local storage
+      localStorage.clear();
+      sessionStorage.clear();
+      await authService.logout();
     } catch (error) {
       console.error('Logout failed:', error);
+      // Even if logout fails, clear the user state
+      setUser(null);
+      localStorage.clear();
+      sessionStorage.clear();
       throw error;
     } finally {
       setIsLoading(false);
