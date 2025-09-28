@@ -13,7 +13,6 @@ import {
   ChevronLeft,
   ChevronRight,
   FileText,
-  Lock,
   Cloud,
   Loader2,
   Paperclip,
@@ -442,75 +441,29 @@ export const HomePage: React.FC = () => {
                     Search through project discussions
                   </p>
                 </div>
+                <div className="bg-accent/20 rounded-lg p-3 text-sm">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Zap className="w-4 h-4 text-orange-500" />
+                    <span className="font-medium">Jira Integration</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Project management and issue tracking
+                  </p>
+                </div>
+                <div className="bg-accent/20 rounded-lg p-3 text-sm">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Github className="w-4 h-4 text-gray-700" />
+                    <span className="font-medium">GitHub Integration</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Code repositories and development workflow
+                  </p>
+                </div>
               </div>
             </div>
           )}
 
           {/* Available Integrations */}
-          <div className="space-y-2">
-            <h4
-              className={`text-xs font-medium text-muted-foreground mb-2 ${
-                isSidebarCollapsed ? 'opacity-0' : 'opacity-100'
-              }`}
-            >
-              Coming Soon
-            </h4>
-            <div
-              className={`w-full h-auto py-3 ${isSidebarCollapsed ? 'px-0' : 'px-3'} opacity-60`}
-            >
-              <div className="flex items-center gap-2">
-                <Zap className="w-4 h-4 text-orange-500 flex-shrink-0" />
-                {!isSidebarCollapsed && (
-                  <div className="text-left flex-1">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">Jira</span>
-                      <Lock className="w-3 h-3 text-muted-foreground" />
-                    </div>
-                    <div className="text-xs text-muted-foreground">Coming soon</div>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div
-              className={`w-full h-auto py-3 ${isSidebarCollapsed ? 'px-0' : 'px-3'} opacity-60`}
-            >
-              <div className="flex items-center gap-2">
-                <Github className="w-4 h-4 text-gray-700 flex-shrink-0" />
-                {!isSidebarCollapsed && (
-                  <div className="text-left flex-1">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">GitHub</span>
-                      <Lock className="w-3 h-3 text-muted-foreground" />
-                    </div>
-                    <div className="text-xs text-muted-foreground">Coming soon</div>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Quick Links */}
-            {!isSidebarCollapsed && (
-              <div className="mb-4">
-                <h4 className="text-xs font-medium text-muted-foreground mb-2">Quick Links</h4>
-                <a
-                  href="/docs"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 p-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors group"
-                >
-                  <FileText className="w-4 h-4 text-blue-600 flex-shrink-0" />
-                  <div className="text-left flex-1">
-                    <div className="text-sm font-medium text-blue-700 group-hover:text-blue-800">
-                      📚 Documentation
-                    </div>
-                    <div className="text-xs text-blue-600">Complete project guide</div>
-                  </div>
-                  <ExternalLink className="w-3 h-3 text-blue-500 opacity-60 group-hover:opacity-100" />
-                </a>
-              </div>
-            )}
-          </div>
         </div>
 
         <div className="border-t py-4 bg-background/50 backdrop-blur-sm">
@@ -547,8 +500,8 @@ export const HomePage: React.FC = () => {
       >
         {messages.length === 0 ? (
           // Empty State with Enhanced Branding
-          <div className="flex-1 flex items-center justify-center p-6">
-            <div className="max-w-3xl w-full">
+          <div className="flex-1 flex items-center justify-center p-2">
+            <div className="max-w-6xl w-full">
               <div className="text-center">
                 <div className="mb-8 relative">
                   <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 rounded-full blur-3xl"></div>
@@ -565,15 +518,15 @@ export const HomePage: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="max-w-2xl mx-auto">
-                  <div className="bg-gradient-to-b from-primary/5 to-transparent p-6 rounded-2xl backdrop-blur-sm">
+                <div className="max-w-4xl mx-auto">
+                  <div className="bg-gradient-to-b from-primary/5 to-transparent p-8 rounded-2xl backdrop-blur-sm">
                     <p className="text-xl text-primary/80 font-medium leading-relaxed mb-8">
                       Your AI companion for instant weather insights and document analysis. Ask
                       anything, get intelligent answers.
                     </p>
 
-                    <div className="grid grid-cols-3 gap-6">
-                      <div className="bg-white/50 p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-primary/10">
+                    <div className="grid grid-cols-5 gap-6">
+                      <div className="bg-white/50 p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-primary/10">
                         <Cloud className="w-8 h-8 text-blue-500 mb-3" />
                         <div className="font-semibold text-lg mb-2 text-primary">
                           Weather Updates
@@ -582,7 +535,7 @@ export const HomePage: React.FC = () => {
                           Real-time forecasts and weather conditions for any location worldwide
                         </p>
                       </div>
-                      <div className="bg-white/50 p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-primary/10">
+                      <div className="bg-white/50 p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-primary/10">
                         <FileText className="w-8 h-8 text-green-500 mb-3" />
                         <div className="font-semibold text-lg mb-2 text-primary">
                           Document Analysis
@@ -591,13 +544,31 @@ export const HomePage: React.FC = () => {
                           Smart document processing with instant insights and summaries
                         </p>
                       </div>
-                      <div className="bg-white/50 p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-primary/10">
+                      <div className="bg-white/50 p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-primary/10">
                         <Slack className="w-8 h-8 text-purple-500 mb-3" />
                         <div className="font-semibold text-lg mb-2 text-primary">
                           Slack Integration
                         </div>
                         <p className="text-muted-foreground">
                           Search through project discussions and team conversations
+                        </p>
+                      </div>
+                      <div className="bg-white/50 p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-primary/10">
+                        <Zap className="w-8 h-8 text-orange-500 mb-3" />
+                        <div className="font-semibold text-lg mb-2 text-primary">
+                          Jira Integration
+                        </div>
+                        <p className="text-muted-foreground">
+                          Project management and issue tracking capabilities
+                        </p>
+                      </div>
+                      <div className="bg-white/50 p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-primary/10">
+                        <Github className="w-8 h-8 text-gray-700 mb-3" />
+                        <div className="font-semibold text-lg mb-2 text-primary">
+                          GitHub Integration
+                        </div>
+                        <p className="text-muted-foreground">
+                          Code repositories and development workflow support
                         </p>
                       </div>
                     </div>

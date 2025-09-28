@@ -5,6 +5,7 @@ import { AuthProvider } from '@/contexts/AuthContext';
 import { ProtectedRoute, PublicOnlyRoute } from '@/components/ProtectedRoute';
 import { AuthCallback } from '@/components/AuthCallback';
 import { LoginPage } from '@/pages/LoginPage';
+import { LogoutPage } from '@/pages/LogoutPage';
 import { HomePage } from '@/pages/HomePage';
 import { DocsLayout } from '@/components/layouts/DocsLayout';
 import { DocsHomePage } from '@/pages/docs/DocsHomePage';
@@ -84,6 +85,9 @@ function App() {
 
             {/* Auth callback routes */}
             <Route path="/auth/callback" element={<AuthCallback />} />
+
+            {/* Logout success page */}
+            <Route path="/logout" element={<LogoutPage />} />
 
             {/* Public documentation routes - accessible without authentication */}
             <Route path="/docs" element={<DocsLayout />}>

@@ -59,11 +59,14 @@ git --version      # Any recent version`}
 
           <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-medium mb-2">1. Clone Repository</h3>
+              <h3 className="text-lg font-medium mb-2">1. Clone Repositories</h3>
               <CodeBlock language="bash">
-                {`# Clone the repository
-git clone <your-repository-url>
+                {`# Clone the frontend repository
+git clone https://github.com/priyankaandhare12/ai-knowledge-chat-ui.git
 cd ai-knowledge-chat-ui
+
+# Clone the backend repository
+git clone https://github.com/priyankaandhare12/knowledge-chatbot.git
 
 # Optional: Create a new branch for your work
 git checkout -b feature/your-feature-name`}
@@ -161,7 +164,7 @@ SESSION_SECRET=your-64-character-session-secret
 JWT_SECRET=your-base64-jwt-secret
 
 # Frontend Integration
-FRONTEND_URL=http://localhost:3000
+FRONTEND_URL=http://localhost:5173
 
 # External APIs
 OPENAI_API_KEY=your_openai_api_key
@@ -208,7 +211,7 @@ npm run dev
 
 # Expected output:
 # VITE ready in XXXms
-# Local:   http://localhost:3000
+# Local:   http://localhost:5173
 # Network: http://192.168.x.x:3000`}
               </CodeBlock>
             </div>
@@ -225,8 +228,8 @@ npm run dev
                 <h4 className="font-medium mb-2">Frontend Health Check</h4>
                 <p className="text-sm text-gray-600 mb-2">Visit the frontend application:</p>
                 <CodeBlock language="bash">
-                  {`curl http://localhost:3000
-# Or visit in browser: http://localhost:3000`}
+                  {`curl http://localhost:5173
+# Or visit in browser: http://localhost:5173`}
                 </CodeBlock>
               </div>
               <div className="border border-gray-200 rounded-lg p-4">
@@ -243,7 +246,7 @@ npm run dev
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <span className="w-4 h-4 bg-green-500 rounded-full flex-shrink-0"></span>
-                <span>Frontend loads at http://localhost:3000</span>
+                <span>Frontend loads at http://localhost:5173</span>
               </div>
               <div className="flex items-center space-x-3">
                 <span className="w-4 h-4 bg-green-500 rounded-full flex-shrink-0"></span>
@@ -251,7 +254,7 @@ npm run dev
               </div>
               <div className="flex items-center space-x-3">
                 <span className="w-4 h-4 bg-green-500 rounded-full flex-shrink-0"></span>
-                <span>Documentation accessible at http://localhost:3000/docs</span>
+                <span>Documentation accessible at http://localhost:5173/docs</span>
               </div>
               <div className="flex items-center space-x-3">
                 <span className="w-4 h-4 bg-yellow-500 rounded-full flex-shrink-0"></span>

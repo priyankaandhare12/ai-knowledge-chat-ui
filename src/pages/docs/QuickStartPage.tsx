@@ -27,10 +27,14 @@ export const QuickStartPage: React.FC = () => {
 
           <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-medium mb-2">1. Clone the Repository</h3>
+              <h3 className="text-lg font-medium mb-2">1. Clone the Repositories</h3>
               <CodeBlock language="bash">
-                {`git clone <repository-url>
-cd ai-knowledge-chat-ui`}
+                {`# Clone frontend repository
+git clone https://github.com/priyankaandhare12/ai-knowledge-chat-ui.git
+cd ai-knowledge-chat-ui
+
+# Clone backend repository (in another directory)
+git clone https://github.com/priyankaandhare12/knowledge-chatbot.git`}
               </CodeBlock>
             </div>
 
@@ -102,7 +106,7 @@ npm start
               <CodeBlock language="bash" title="Start Frontend Development Server (Terminal 2)">
                 {`cd ai-knowledge-chat-ui
 npm run dev
-# Frontend will run on http://localhost:3000`}
+# Frontend will run on http://localhost:5173`}
               </CodeBlock>
             </div>
           </div>
@@ -116,9 +120,20 @@ npm run dev
               <h3 className="text-lg font-medium mb-2">Check Services</h3>
               <ul className="list-disc list-inside space-y-2 text-gray-700">
                 <li>
-                  Frontend: Visit{' '}
-                  <a href="http://localhost:3000" className="text-blue-600 hover:underline">
-                    http://localhost:3000
+                  Frontend (Local): Visit{' '}
+                  <a href="http://localhost:5173" className="text-blue-600 hover:underline">
+                    http://localhost:5173
+                  </a>
+                </li>
+                <li>
+                  Frontend (Live): Visit{' '}
+                  <a
+                    href="https://ai-knowledge-chat-ui.vercel.app/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline"
+                  >
+                    ai-knowledge-chat-ui.vercel.app
                   </a>
                 </li>
                 <li>

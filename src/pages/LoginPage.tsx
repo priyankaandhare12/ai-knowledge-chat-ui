@@ -110,7 +110,6 @@ export const LoginPage: React.FC = () => {
           transition={{ delay: 0.6, duration: 0.6 }}
           className="text-center text-sm text-gray-600 space-y-2"
         >
-          <p>Secure login powered by Auth0</p>
           <div>
             <a
               href="/docs"

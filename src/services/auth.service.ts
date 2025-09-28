@@ -69,31 +69,30 @@ export class AuthService {
 
   async logout(): Promise<void> {
     try {
-      // Clear local token first
+      // Clear all local storage items related to auth
       localStorage.removeItem('auth_token');
+      localStorage.clear(); // Clear all local storage to be safe
+
+      // Clear session storage as well
+      sessionStorage.clear();
 
       const response = await apiClient.post('/api/auth/logout', {
-        returnTo: window.location.origin,
+        returnTo: `${window.location.origin}/logout`,
       });
 
       if (response.data.success && response.data.logoutUrl) {
-        // Redirect to Auth0 logout - this will clear Auth0 session
-        window.location.href = response.data.logoutUrl;
-
-        // Set a timeout to redirect back to home after logout
-        // This is a fallback in case Auth0 doesn't redirect back
-        setTimeout(() => {
-          window.location.href = '/';
-        }, 3000);
+        // Force a complete page reload to clear any cached state
+        window.location.replace(response.data.logoutUrl);
       } else {
-        // Fallback: just redirect to home
-        window.location.href = '/';
+        // Fallback: force redirect to logout page with page reload
+        window.location.replace('/logout');
       }
     } catch (error) {
       console.error('Logout error:', error);
-      // Clear token and redirect to home
-      localStorage.removeItem('auth_token');
-      window.location.href = '/';
+      // Clear all storage and force redirect to logout page
+      localStorage.clear();
+      sessionStorage.clear();
+      window.location.replace('/logout');
     }
   }
 

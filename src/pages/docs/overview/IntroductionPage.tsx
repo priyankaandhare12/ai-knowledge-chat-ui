@@ -11,6 +11,39 @@ export const IntroductionPage: React.FC = () => {
             make complex information easily accessible through natural conversation.
           </p>
 
+          <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg p-6 border border-green-200 mb-8">
+            <h2 className="text-2xl font-semibold mb-4 text-green-800">🔗 Quick Links</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <a
+                href="https://ai-knowledge-chat-ui.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 text-green-700 hover:text-green-900 font-medium"
+              >
+                <span>🌐</span>
+                <span>Live Application</span>
+              </a>
+              <a
+                href="https://github.com/priyankaandhare12/ai-knowledge-chat-ui"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 text-blue-700 hover:text-blue-900 font-medium"
+              >
+                <span>📱</span>
+                <span>Frontend Repository</span>
+              </a>
+              <a
+                href="https://github.com/priyankaandhare12/knowledge-chatbot"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 text-purple-700 hover:text-purple-900 font-medium"
+              >
+                <span>⚙️</span>
+                <span>Backend Repository</span>
+              </a>
+            </div>
+          </div>
+
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6 border border-blue-200 mb-8">
             <h2 className="text-2xl font-semibold mb-4 text-blue-800">🎯 Project Mission</h2>
             <p className="text-gray-700">

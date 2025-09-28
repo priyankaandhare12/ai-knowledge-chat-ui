@@ -85,14 +85,20 @@ export const DevelopmentGuidePage: React.FC = () => {
               <h3 className="text-lg font-semibold mb-4">1️⃣ Repository Clone & Setup</h3>
 
               <div className="bg-black rounded p-4 text-green-400 font-mono text-sm mb-4">
-                <div className="mb-2"># Clone the repository</div>
+                <div className="mb-2"># Clone the frontend repository</div>
                 <div className="mb-2">
-                  git clone https://github.com/your-org/knowledge-chatbot.git
+                  git clone https://github.com/priyankaandhare12/ai-knowledge-chat-ui.git
+                </div>
+                <div className="mb-2">cd ai-knowledge-chat-ui</div>
+                <br />
+                <div className="mb-2"># Clone the backend repository</div>
+                <div className="mb-2">
+                  git clone https://github.com/priyankaandhare12/knowledge-chatbot.git
                 </div>
                 <div className="mb-2">cd knowledge-chatbot</div>
                 <br />
                 <div className="mb-2"># Install frontend dependencies</div>
-                <div className="mb-2">cd ai-knowledge-chat-ui</div>
+                <div className="mb-2">cd ../ai-knowledge-chat-ui</div>
                 <div className="mb-2">pnpm install</div>
                 <br />
                 <div className="mb-2"># Install backend dependencies</div>

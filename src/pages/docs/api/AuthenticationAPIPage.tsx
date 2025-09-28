@@ -78,7 +78,7 @@ AUTH0_AUDIENCE=https://your-api.com`}
                   <div className="bg-gray-50 p-3 rounded border text-sm font-mono">
                     <pre className="whitespace-pre-wrap">
                       {`{
-  "returnTo": "https://app.example.com/dashboard",
+  "returnTo": "https://ai-knowledge-chat-ui.vercel.app/dashboard",
   "connection": "google-oauth2", // optional
   "prompt": "login" // optional
 }`}
@@ -263,7 +263,7 @@ AUTH0_AUDIENCE=https://your-api.com`}
                   <div className="bg-gray-50 p-3 rounded border text-sm font-mono">
                     <pre className="whitespace-pre-wrap">
                       {`{
-  "returnTo": "https://app.example.com/login"
+  "returnTo": "https://ai-knowledge-chat-ui.vercel.app/login"
 }`}
                     </pre>
                   </div>
