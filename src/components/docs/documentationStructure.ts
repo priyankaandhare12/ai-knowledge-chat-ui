@@ -112,16 +112,6 @@ export const documentationStructure: DocSection[] = [
         title: 'File Upload & Processing',
         path: '/docs/features/file-upload',
       },
-      {
-        id: 'pdf-processing',
-        title: 'PDF Processing',
-        path: '/docs/features/pdf-processing',
-      },
-      {
-        id: 'external-sources',
-        title: 'External Source Implementation',
-        path: '/docs/features/external-sources',
-      },
     ],
   },
   {
@@ -140,16 +130,6 @@ export const documentationStructure: DocSection[] = [
         title: 'Chat Endpoints',
         path: '/docs/api/chat',
       },
-      {
-        id: 'file-endpoints',
-        title: 'File Upload Endpoints',
-        path: '/docs/api/files',
-      },
-      {
-        id: 'external-apis',
-        title: 'External API Integrations',
-        path: '/docs/api/external',
-      },
     ],
   },
   {
@@ -162,16 +142,6 @@ export const documentationStructure: DocSection[] = [
         id: 'vercel-deployment',
         title: 'Vercel Deployment',
         path: '/docs/deployment/vercel',
-      },
-      {
-        id: 'production-setup',
-        title: 'Production Setup',
-        path: '/docs/deployment/production',
-      },
-      {
-        id: 'environment-variables',
-        title: 'Environment Variables',
-        path: '/docs/deployment/environment',
       },
     ],
   },
@@ -187,24 +157,9 @@ export const documentationStructure: DocSection[] = [
         path: '/docs/development/guide',
       },
       {
-        id: 'testing',
-        title: 'Testing',
-        path: '/docs/development/testing',
-      },
-      {
         id: 'qa-automation',
         title: 'QA Automation',
         path: '/docs/development/qa-automation',
-      },
-      {
-        id: 'troubleshooting',
-        title: 'Troubleshooting',
-        path: '/docs/development/troubleshooting',
-      },
-      {
-        id: 'package-dependencies',
-        title: 'Package Dependencies',
-        path: '/docs/development/dependencies',
       },
     ],
   },
@@ -218,21 +173,6 @@ export const documentationStructure: DocSection[] = [
         id: 'security-overview',
         title: 'Security Overview',
         path: '/docs/security/overview',
-      },
-      {
-        id: 'auth0-setup',
-        title: 'Auth0 Configuration',
-        path: '/docs/security/auth0-setup',
-      },
-      {
-        id: 'environment-secrets',
-        title: 'Environment Secrets',
-        path: '/docs/security/secrets',
-      },
-      {
-        id: 'security-alerts',
-        title: 'Security Alerts',
-        path: '/docs/security/alerts',
       },
     ],
   },
