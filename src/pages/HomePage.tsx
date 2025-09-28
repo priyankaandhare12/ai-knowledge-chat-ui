@@ -22,6 +22,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
+import { AttachedFiles } from '@/components/ui/AttachedFiles';
 import { useAuth } from '@/contexts/AuthContext';
 import { apiClient } from '@/services/api.service';
 
@@ -31,6 +32,11 @@ interface Message {
   isUser: boolean;
   timestamp: Date;
   sources?: { name: string; url: string }[];
+  attachedFile?: {
+    id: string;
+    name: string;
+    type: string;
+  };
 }
 
 export const HomePage: React.FC = () => {
@@ -39,9 +45,15 @@ export const HomePage: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [fileId, setFileId] = useState<string | null>(null);
+  interface AttachedFile {
+    id: string;
+    file: File;
+    previewUrl?: string;
+  }
+
+  const [attachedFiles, setAttachedFiles] = useState<AttachedFile[]>([]);
   const [isUploading, setIsUploading] = useState(false);
+  const [selectedFileId, setSelectedFileId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const lastMessageTime = useRef<number>(0);
@@ -59,18 +71,6 @@ export const HomePage: React.FC = () => {
     const newState = !isSidebarCollapsed;
     setIsSidebarCollapsed(newState);
     localStorage.setItem('sidebarCollapsed', JSON.stringify(newState));
-  };
-
-  const truncateFileName = (fileName: string, maxLength: number = 15): string => {
-    if (fileName.length <= maxLength) return fileName;
-
-    const extension = fileName.split('.').pop();
-    const nameWithoutExt = fileName.slice(0, fileName.lastIndexOf('.'));
-    const availableLength = maxLength - (extension ? extension.length + 1 : 0);
-
-    if (availableLength <= 3) return `...${extension ? '.' + extension : ''}`;
-
-    return `${nameWithoutExt.slice(0, availableLength - 3)}...${extension ? '.' + extension : ''}`;
   };
 
   const scrollToBottom = () => {
@@ -122,7 +122,6 @@ export const HomePage: React.FC = () => {
       return;
     }
 
-    setUploadedFile(file);
     setIsUploading(true);
 
     try {
@@ -131,17 +130,23 @@ export const HomePage: React.FC = () => {
       console.log('File upload response:', uploadResponse);
 
       if (uploadResponse.success && uploadResponse.data?.fileId) {
-        setFileId(uploadResponse.data.fileId);
+        const newFile: AttachedFile = {
+          id: uploadResponse.data.fileId,
+          file: file,
+        };
+        setAttachedFiles(prev => [...prev, newFile]);
+        setSelectedFileId(uploadResponse.data.fileId);
         console.log('File uploaded successfully:', uploadResponse.data.fileName);
       } else {
         throw new Error('Upload failed - no file ID received');
       }
     } catch (error: unknown) {
       console.error('File upload error:', error);
-      setUploadedFile(null);
-      setFileId(null);
     } finally {
       setIsUploading(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
     }
   };
 
@@ -149,12 +154,17 @@ export const HomePage: React.FC = () => {
     fileInputRef.current?.click();
   };
 
-  const handleClearFile = () => {
-    setUploadedFile(null);
-    setFileId(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+  const handleRemoveFile = (fileId: string) => {
+    setAttachedFiles(prev => prev.filter(file => file.id !== fileId));
+    if (selectedFileId === fileId) {
+      setSelectedFileId(null);
     }
+  };
+
+  const handleFileClick = (file: AttachedFile) => {
+    // Create a temporary URL for the PDF file
+    const fileUrl = URL.createObjectURL(file.file);
+    window.open(fileUrl, '_blank');
   };
 
   const handleSendMessage = async () => {
@@ -191,6 +201,13 @@ export const HomePage: React.FC = () => {
       text: inputValue,
       isUser: true,
       timestamp: new Date(),
+      attachedFile: selectedFileId
+        ? {
+            id: selectedFileId,
+            name: attachedFiles.find(f => f.id === selectedFileId)?.file.name || '',
+            type: 'PDF',
+          }
+        : undefined,
     };
 
     setMessages(prev => [...prev, userMessage]);
@@ -207,9 +224,9 @@ export const HomePage: React.FC = () => {
       // Call the real chat API with optional fileId
       console.log(
         'Making API call to /api/chat...',
-        fileId ? `with fileId: ${fileId}` : 'without file'
+        selectedFileId ? `with fileId: ${selectedFileId}` : 'without file'
       );
-      const response = await apiClient.sendMessage(currentInput, fileId || undefined);
+      const response = await apiClient.sendMessage(currentInput, selectedFileId || undefined);
       console.log('API response received:', response);
 
       // Extract message from the correct response structure
@@ -232,13 +249,9 @@ export const HomePage: React.FC = () => {
       // Scroll to bottom after adding bot response
       setTimeout(() => scrollToBottom(), 100);
 
-      // Clear file after successful message send
-      if (fileId) {
-        setUploadedFile(null);
-        setFileId(null);
-        if (fileInputRef.current) {
-          fileInputRef.current.value = '';
-        }
+      // Clear selected file after successful message send
+      if (selectedFileId) {
+        setSelectedFileId(null);
       }
     } catch (error: unknown) {
       console.error('Chat API error:', error);
@@ -509,6 +522,13 @@ export const HomePage: React.FC = () => {
         </div>
       </motion.div>
 
+      {/* Attached Files */}
+      <AttachedFiles
+        files={attachedFiles}
+        onRemoveFile={handleRemoveFile}
+        onFileClick={handleFileClick}
+      />
+
       {/* Main Chat Area - Adjusted for fixed sidebar */}
       <div
         className={`flex flex-col flex-1 h-screen transition-all duration-300 ${
@@ -622,7 +642,48 @@ export const HomePage: React.FC = () => {
                       <div className="p-4">
                         <div className="whitespace-pre-wrap">
                           {message.isUser ? (
-                            message.text
+                            <div className="space-y-3">
+                              {message.attachedFile && (
+                                <div
+                                  className="flex items-center gap-3 bg-blue-700 rounded-lg p-2 cursor-pointer hover:bg-blue-800 transition-colors"
+                                  onClick={() => {
+                                    const file = attachedFiles.find(
+                                      f => f.id === message.attachedFile?.id
+                                    )?.file;
+                                    if (file) {
+                                      const fileUrl = URL.createObjectURL(file);
+                                      window.open(fileUrl, '_blank');
+                                    }
+                                  }}
+                                >
+                                  <div className="flex-shrink-0 w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center">
+                                    <svg
+                                      className="w-5 h-5 text-white"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path d="M7 18H17V16H7V18Z" fill="currentColor" />
+                                      <path d="M17 14H7V12H17V14Z" fill="currentColor" />
+                                      <path d="M7 10H11V8H7V10Z" fill="currentColor" />
+                                      <path
+                                        fillRule="evenodd"
+                                        clipRule="evenodd"
+                                        d="M6 2C4.34315 2 3 3.34315 3 5V19C3 20.6569 4.34315 22 6 22H18C19.6569 22 21 20.6569 21 19V9C21 5.13401 17.866 2 14 2H6ZM6 4H13V9H19V19C19 19.5523 18.5523 20 18 20H6C5.44772 20 5 19.5523 5 19V5C5 4.44772 5.44772 4 6 4ZM15 4.10002C16.6113 4.4271 17.9413 5.52906 18.584 7H15V4.10002Z"
+                                        fill="currentColor"
+                                      />
+                                    </svg>
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <div className="text-sm font-medium text-white truncate">
+                                      {message.attachedFile.name}
+                                    </div>
+                                    <div className="text-xs text-blue-200">PDF</div>
+                                  </div>
+                                </div>
+                              )}
+                              <div>{message.text}</div>
+                            </div>
                           ) : (
                             <div className="space-y-2 text-gray-800">
                               <div className="text-gray-800">{linkifyText(message.text)}</div>
@@ -703,79 +764,140 @@ export const HomePage: React.FC = () => {
         >
           {/* Input Row */}
           <div className="border-t border-gray-200">
-            <div className="px-6 py-12 flex space-x-2">
-              <div className="relative flex-1">
-                <Input
-                  value={inputValue}
-                  onChange={e => setInputValue(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  placeholder={
-                    uploadedFile
-                      ? `Ask about ${uploadedFile.name}...`
-                      : messages.length === 0
-                        ? 'Ask about weather or upload a file for analysis...'
-                        : 'Type your message...'
-                  }
-                  className="flex-1 py-3 pr-12"
-                  disabled={isTyping || !isAuthenticated}
-                />
-
-                {/* File Upload Button or File Indicator */}
-                {uploadedFile && !isUploading ? (
-                  <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
-                    <div className="flex items-center space-x-1 bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs">
-                      <FileText className="w-3 h-3" />
-                      <span>{truncateFileName(uploadedFile.name)}</span>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={handleClearFile}
-                        className="h-4 w-4 p-0 text-blue-600 hover:text-blue-800"
-                        aria-label="Clear file"
-                      >
-                        <X className="w-3 h-3" />
-                      </Button>
+            <div className="px-6 py-4">
+              <div className="relative flex items-center gap-2">
+                <div className="relative flex-1 rounded-xl border border-gray-200 bg-white shadow-sm">
+                  <div className="flex items-center min-h-[44px]">
+                    {/* File Upload Button */}
+                    <div className="absolute left-2 top-1/2 -translate-y-1/2">
+                      <div className="relative">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={handleFileIconClick}
+                          disabled={isUploading || isTyping || selectedFileId !== null}
+                          className="relative h-8 w-8 p-0 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors group"
+                        >
+                          {isUploading ? (
+                            <>
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2">
+                                <div className="bg-gray-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap flex items-center gap-2">
+                                  <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-pulse"></div>
+                                  Uploading file...
+                                </div>
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <Paperclip
+                                className={`w-4 h-4 ${selectedFileId ? 'opacity-50' : ''}`}
+                              />
+                              {selectedFileId && (
+                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block">
+                                  <div className="bg-gray-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
+                                    Only one file at a time
+                                  </div>
+                                </div>
+                              )}
+                            </>
+                          )}
+                        </Button>
+                      </div>
                     </div>
-                  </div>
-                ) : (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleFileIconClick}
-                    disabled={isUploading || isTyping}
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 text-gray-400 hover:text-gray-600"
-                  >
-                    {isUploading ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : (
-                      <Paperclip className="w-4 h-4" />
-                    )}
-                  </Button>
-                )}
 
-                {/* Hidden File Input */}
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept=".pdf"
-                  onChange={handleFileUpload}
-                  className="hidden"
-                  disabled={isUploading || isTyping}
-                  aria-label="Upload file"
-                />
+                    {/* File Display */}
+                    {selectedFileId && (
+                      <div className="flex items-center gap-2 ml-12 mr-2 my-2">
+                        <div
+                          className="flex items-center gap-2 bg-gray-50 hover:bg-gray-100 rounded-lg py-2 px-3 cursor-pointer transition-colors text-gray-700 text-sm group"
+                          onClick={() => {
+                            const file = attachedFiles.find(f => f.id === selectedFileId)?.file;
+                            if (file) {
+                              const fileUrl = URL.createObjectURL(file);
+                              window.open(fileUrl, '_blank');
+                            }
+                          }}
+                        >
+                          <div className="flex-shrink-0 w-5 h-5 bg-red-500 rounded flex items-center justify-center">
+                            <svg
+                              className="w-3 h-3 text-white"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path d="M7 18H17V16H7V18Z" fill="currentColor" />
+                              <path d="M17 14H7V12H17V14Z" fill="currentColor" />
+                              <path d="M7 10H11V8H7V10Z" fill="currentColor" />
+                              <path
+                                fillRule="evenodd"
+                                clipRule="evenodd"
+                                d="M6 2C4.34315 2 3 3.34315 3 5V19C3 20.6569 4.34315 22 6 22H18C19.6569 22 21 20.6569 21 19V9C21 5.13401 17.866 2 14 2H6ZM6 4H13V9H19V19C19 19.5523 18.5523 20 18 20H6C5.44772 20 5 19.5523 5 19V5C5 4.44772 5.44772 4 6 4ZM15 4.10002C16.6113 4.4271 17.9413 5.52906 18.584 7H15V4.10002Z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </div>
+                          <span className="font-medium">
+                            {attachedFiles.find(f => f.id === selectedFileId)?.file.name}
+                          </span>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={e => {
+                              e.stopPropagation();
+                              setSelectedFileId(null);
+                            }}
+                            className="h-6 w-6 p-0 hover:bg-gray-200 rounded-full transition-colors ml-1"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Input Field */}
+                    <Input
+                      value={inputValue}
+                      onChange={e => setInputValue(e.target.value)}
+                      onKeyPress={handleKeyPress}
+                      placeholder={
+                        selectedFileId
+                          ? `Ask about the uploaded file...`
+                          : messages.length === 0
+                            ? 'Ask about weather or upload a file for analysis...'
+                            : 'Type your message...'
+                      }
+                      className={`w-full py-3 pl-12 pr-4 border-0 focus-visible:ring-0 bg-transparent ${
+                        selectedFileId ? 'placeholder:text-gray-400' : ''
+                      }`}
+                      disabled={isTyping || !isAuthenticated}
+                    />
+                  </div>
+
+                  {/* Hidden File Input */}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".pdf"
+                    onChange={handleFileUpload}
+                    className="hidden"
+                    disabled={isUploading || isTyping}
+                    aria-label="Upload file"
+                  />
+                </div>
+                <Button
+                  onClick={handleSendMessage}
+                  disabled={!inputValue.trim() || isTyping || !isAuthenticated}
+                  className="h-[44px] px-4"
+                  aria-label="Send message"
+                >
+                  {isTyping ? (
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                  ) : (
+                    <Send className="w-4 h-4" />
+                  )}
+                </Button>
               </div>
-              <Button
-                onClick={handleSendMessage}
-                disabled={!inputValue.trim() || isTyping || !isAuthenticated}
-                className="px-4 py-3"
-                aria-label="Send message"
-              >
-                {isTyping ? (
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                ) : (
-                  <Send className="w-4 h-4" />
-                )}
-              </Button>
             </div>
           </div>
         </div>
