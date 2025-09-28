@@ -58,7 +58,9 @@ export const LoginPage: React.FC = () => {
           <Bot className="w-20 h-20 mx-auto text-primary relative animate-float" />
         </div>
         <div className="space-y-4 mb-8">
-          <h1 className="text-6xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-transparent bg-clip-text pb-4">OmniMind</h1>
+          <h1 className="text-6xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-transparent bg-clip-text pb-4">
+            OmniPulse
+          </h1>
           <div className="inline-flex items-center px-4 py-2 bg-primary/5 rounded-full text-base text-primary gap-2">
             <Bot className="w-4 h-4" />
             <span className="font-medium">Universal Knowledge AI-Assistant</span>

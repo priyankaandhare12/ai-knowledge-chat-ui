@@ -48,7 +48,10 @@ export const HomePage: React.FC = () => {
   // const [showFileAnalysisInfo, setShowFileAnalysisInfo] = useState(false);
   const [showFileAnalysisTooltip, setShowFileAnalysisTooltip] = useState(false);
   const fileAnalysisRef = useRef<HTMLDivElement>(null);
-  const [tooltipPosition, setTooltipPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
+  const [tooltipPosition, setTooltipPosition] = useState<{ top: number; left: number }>({
+    top: 0,
+    left: 0,
+  });
 
   interface AttachedFile {
     id: string;
@@ -361,7 +364,10 @@ export const HomePage: React.FC = () => {
 
   const [showWeatherApiTooltip, setShowWeatherApiTooltip] = useState(false);
   const weatherApiRef = useRef<HTMLDivElement>(null);
-  const [weatherTooltipPosition, setWeatherTooltipPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
+  const [weatherTooltipPosition, setWeatherTooltipPosition] = useState<{
+    top: number;
+    left: number;
+  }>({ top: 0, left: 0 });
 
   const handleWeatherApiClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -374,7 +380,10 @@ export const HomePage: React.FC = () => {
 
   const [showSlackTooltip, setShowSlackTooltip] = useState(false);
   const slackRef = useRef<HTMLDivElement>(null);
-  const [slackTooltipPosition, setSlackTooltipPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
+  const [slackTooltipPosition, setSlackTooltipPosition] = useState<{ top: number; left: number }>({
+    top: 0,
+    left: 0,
+  });
 
   const handleSlackClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -387,7 +396,10 @@ export const HomePage: React.FC = () => {
 
   const [showJiraTooltip, setShowJiraTooltip] = useState(false);
   const jiraRef = useRef<HTMLDivElement>(null);
-  const [jiraTooltipPosition, setJiraTooltipPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
+  const [jiraTooltipPosition, setJiraTooltipPosition] = useState<{ top: number; left: number }>({
+    top: 0,
+    left: 0,
+  });
 
   const handleJiraClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -400,7 +412,9 @@ export const HomePage: React.FC = () => {
 
   const [showGithubTooltip, setShowGithubTooltip] = useState(false);
   const githubRef = useRef<HTMLDivElement>(null);
-  const [githubTooltipPosition, setGithubTooltipPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
+  const [githubTooltipPosition, setGithubTooltipPosition] = useState<{ top: number; left: number }>(
+    { top: 0, left: 0 }
+  );
 
   const handleGithubClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -488,7 +502,7 @@ export const HomePage: React.FC = () => {
           {!isSidebarCollapsed && (
             <div className="space-y-3">
               <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-transparent bg-clip-text">
-                    OmniMind
+                OmniPulse
               </h2>
               <div className="inline-flex items-center px-3 py-1 bg-primary/10 rounded-full text-xs text-primary/70 gap-1">
                 <Bot className="w-3 h-3" />
@@ -529,111 +543,169 @@ export const HomePage: React.FC = () => {
             <div className="mb-6">
               {/* <h4 className="text-xs font-medium text-muted-foreground mb-2">Connected Sources</h4> */}
               <div className="space-y-2">
-                <div ref={weatherApiRef} className="bg-accent/20 rounded-lg p-3 text-sm cursor-pointer hover:shadow-md transition-shadow relative" onClick={handleWeatherApiClick}>
+                <div
+                  ref={weatherApiRef}
+                  className="bg-accent/20 rounded-lg p-3 text-sm cursor-pointer hover:shadow-md transition-shadow relative"
+                  onClick={handleWeatherApiClick}
+                >
                   <div className="flex items-center gap-2 mb-1">
                     <Cloud className="w-4 h-4 text-blue-500" />
                     <span className="font-medium">Weather API</span>
                   </div>
-                  <p className="text-xs text-muted-foreground">Real-time weather information and forecasts</p>
+                  <p className="text-xs text-muted-foreground">
+                    Real-time weather information and forecasts
+                  </p>
                 </div>
-                {showWeatherApiTooltip && ReactDOM.createPortal(
-                  <div
-                    style={{ position: 'fixed', top: weatherTooltipPosition.top, left: weatherTooltipPosition.left, zIndex: 9999 }}
-                    className="bg-white border border-gray-200 rounded-xl shadow-lg px-4 py-2 text-sm text-gray-700 whitespace-nowrap flex items-center gap-2"
-                    onClick={e => e.stopPropagation()}
-                  >
-                    <Info className="w-4 h-4 text-blue-500" />
-                    <div className="flex flex-col">
-                      <span>Weather Source: OpenWeatherMap</span>
-                      <span>Real-time weather updates</span>
-                    </div>
-                  </div>,
-                  document.body
-                )}
-                <div ref={fileAnalysisRef} className="bg-accent/20 rounded-lg p-3 text-sm cursor-pointer hover:shadow-md transition-shadow relative" onClick={handleFileAnalysisClick}>
+                {showWeatherApiTooltip &&
+                  ReactDOM.createPortal(
+                    <div
+                      style={{
+                        position: 'fixed',
+                        top: weatherTooltipPosition.top,
+                        left: weatherTooltipPosition.left,
+                        zIndex: 9999,
+                      }}
+                      className="bg-white border border-gray-200 rounded-xl shadow-lg px-4 py-2 text-sm text-gray-700 whitespace-nowrap flex items-center gap-2"
+                      onClick={e => e.stopPropagation()}
+                    >
+                      <Info className="w-4 h-4 text-blue-500" />
+                      <div className="flex flex-col">
+                        <span>Weather Source: OpenWeatherMap</span>
+                        <span>Real-time weather updates</span>
+                      </div>
+                    </div>,
+                    document.body
+                  )}
+                <div
+                  ref={fileAnalysisRef}
+                  className="bg-accent/20 rounded-lg p-3 text-sm cursor-pointer hover:shadow-md transition-shadow relative"
+                  onClick={handleFileAnalysisClick}
+                >
                   <div className="flex items-center gap-2 mb-1">
                     <FileText className="w-4 h-4 text-green-500" />
                     <span className="font-medium">File Analysis</span>
                   </div>
                   <p className="text-xs text-muted-foreground">Upload and analyze documents</p>
                 </div>
-                {showFileAnalysisTooltip && ReactDOM.createPortal(
-                  <div
-                    style={{ position: 'fixed', top: tooltipPosition.top, left: tooltipPosition.left, zIndex: 9999,  }}
-                    className="bg-white border border-gray-200 rounded-xl shadow-lg px-4 py-2 text-sm text-gray-700 whitespace-nowrap flex items-center gap-2"
-                    onClick={e => e.stopPropagation()}
-                  >
-                    <Info className="w-4 h-4 text-blue-500" />
-                    <div className="flex flex-col">
-                      <span>File type: PDF</span>
-                      <span>Upload limit: 1 file</span>
-                    </div>
-                  </div>,
-                  document.body
-                )}
-                <div ref={slackRef} className="bg-accent/20 rounded-lg p-3 text-sm cursor-pointer hover:shadow-md transition-shadow relative" onClick={handleSlackClick}>
+                {showFileAnalysisTooltip &&
+                  ReactDOM.createPortal(
+                    <div
+                      style={{
+                        position: 'fixed',
+                        top: tooltipPosition.top,
+                        left: tooltipPosition.left,
+                        zIndex: 9999,
+                      }}
+                      className="bg-white border border-gray-200 rounded-xl shadow-lg px-4 py-2 text-sm text-gray-700 whitespace-nowrap flex items-center gap-2"
+                      onClick={e => e.stopPropagation()}
+                    >
+                      <Info className="w-4 h-4 text-blue-500" />
+                      <div className="flex flex-col">
+                        <span>File type: PDF</span>
+                        <span>Upload limit: 1 file</span>
+                      </div>
+                    </div>,
+                    document.body
+                  )}
+                <div
+                  ref={slackRef}
+                  className="bg-accent/20 rounded-lg p-3 text-sm cursor-pointer hover:shadow-md transition-shadow relative"
+                  onClick={handleSlackClick}
+                >
                   <div className="flex items-center gap-2 mb-1">
                     <Slack className="w-4 h-4 text-purple-500" />
                     <span className="font-medium">Slack Integration</span>
                   </div>
-                  <p className="text-xs text-muted-foreground">Search through project discussions</p>
+                  <p className="text-xs text-muted-foreground">
+                    Search through project discussions
+                  </p>
                 </div>
-                {showSlackTooltip && ReactDOM.createPortal(
-                  <div
-                    style={{ position: 'fixed', top: slackTooltipPosition.top, left: slackTooltipPosition.left, zIndex: 9999 }}
-                    className="bg-white border border-gray-200 rounded-xl shadow-lg px-4 py-2 text-sm text-gray-700 whitespace-nowrap flex items-center gap-2"
-                    onClick={e => e.stopPropagation()}
-                  >
-                    <Info className="w-4 h-4 text-purple-500" />
-                    <div className="flex flex-col">
-                      <span>Slack Channel: knowlege-chatbot</span>
-                      <span>Real-time Channel Insights</span>
-                    </div>
-                  </div>,
-                  document.body
-                )}
-                <div ref={jiraRef} className="bg-accent/20 rounded-lg p-3 text-sm cursor-pointer hover:shadow-md transition-shadow relative" onClick={handleJiraClick}>
+                {showSlackTooltip &&
+                  ReactDOM.createPortal(
+                    <div
+                      style={{
+                        position: 'fixed',
+                        top: slackTooltipPosition.top,
+                        left: slackTooltipPosition.left,
+                        zIndex: 9999,
+                      }}
+                      className="bg-white border border-gray-200 rounded-xl shadow-lg px-4 py-2 text-sm text-gray-700 whitespace-nowrap flex items-center gap-2"
+                      onClick={e => e.stopPropagation()}
+                    >
+                      <Info className="w-4 h-4 text-purple-500" />
+                      <div className="flex flex-col">
+                        <span>Slack Channel: knowlege-chatbot</span>
+                        <span>Real-time Channel Insights</span>
+                      </div>
+                    </div>,
+                    document.body
+                  )}
+                <div
+                  ref={jiraRef}
+                  className="bg-accent/20 rounded-lg p-3 text-sm cursor-pointer hover:shadow-md transition-shadow relative"
+                  onClick={handleJiraClick}
+                >
                   <div className="flex items-center gap-2 mb-1">
                     <Zap className="w-4 h-4 text-orange-500" />
                     <span className="font-medium">Jira Integration</span>
                   </div>
-                  <p className="text-xs text-muted-foreground">Project management and issue tracking</p>
+                  <p className="text-xs text-muted-foreground">
+                    Project management and issue tracking
+                  </p>
                 </div>
-                {showJiraTooltip && ReactDOM.createPortal(
-                  <div
-                    style={{ position: 'fixed', top: jiraTooltipPosition.top, left: jiraTooltipPosition.left, zIndex: 9999 }}
-                    className="bg-white border border-gray-200 rounded-xl shadow-lg px-4 py-2 text-sm text-gray-700 whitespace-nowrap flex items-center gap-2"
-                    onClick={e => e.stopPropagation()}
-                  >
-                    <Info className="w-4 h-4 text-orange-500" />
-                    <div className="flex flex-col">
-                      <span>Jira Project: Tech9 Hackathon</span>
-                      <span>Real-time Jira Project Insights</span>
-                    </div>
-                  </div>,
-                  document.body
-                )}
-                <div ref={githubRef} className="bg-accent/20 rounded-lg p-3 text-sm cursor-pointer hover:shadow-md transition-shadow relative" onClick={handleGithubClick}>
+                {showJiraTooltip &&
+                  ReactDOM.createPortal(
+                    <div
+                      style={{
+                        position: 'fixed',
+                        top: jiraTooltipPosition.top,
+                        left: jiraTooltipPosition.left,
+                        zIndex: 9999,
+                      }}
+                      className="bg-white border border-gray-200 rounded-xl shadow-lg px-4 py-2 text-sm text-gray-700 whitespace-nowrap flex items-center gap-2"
+                      onClick={e => e.stopPropagation()}
+                    >
+                      <Info className="w-4 h-4 text-orange-500" />
+                      <div className="flex flex-col">
+                        <span>Jira Project: Tech9 Hackathon</span>
+                        <span>Real-time Jira Project Insights</span>
+                      </div>
+                    </div>,
+                    document.body
+                  )}
+                <div
+                  ref={githubRef}
+                  className="bg-accent/20 rounded-lg p-3 text-sm cursor-pointer hover:shadow-md transition-shadow relative"
+                  onClick={handleGithubClick}
+                >
                   <div className="flex items-center gap-2 mb-1">
                     <Github className="w-4 h-4 text-gray-700" />
                     <span className="font-medium">GitHub Integration</span>
                   </div>
-                  <p className="text-xs text-muted-foreground">Code repositories and development workflow</p>
+                  <p className="text-xs text-muted-foreground">
+                    Code repositories and development workflow
+                  </p>
                 </div>
-                {showGithubTooltip && ReactDOM.createPortal(
-                  <div
-                    style={{ position: 'fixed', top: githubTooltipPosition.top, left: githubTooltipPosition.left, zIndex: 9999 }}
-                    className="bg-white border border-gray-200 rounded-xl shadow-lg px-4 py-2 text-sm text-gray-700 whitespace-nowrap flex items-center gap-2"
-                    onClick={e => e.stopPropagation()}
-                  >
-                    <Info className="w-4 h-4 text-gray-700" />
-                    <div className="flex flex-col">
-                      <span>Repositories: Chatbot UI & API</span>
-                      <span>Get Commits Insights</span>
-                    </div>
-                  </div>,
-                  document.body
-                )}
+                {showGithubTooltip &&
+                  ReactDOM.createPortal(
+                    <div
+                      style={{
+                        position: 'fixed',
+                        top: githubTooltipPosition.top,
+                        left: githubTooltipPosition.left,
+                        zIndex: 9999,
+                      }}
+                      className="bg-white border border-gray-200 rounded-xl shadow-lg px-4 py-2 text-sm text-gray-700 whitespace-nowrap flex items-center gap-2"
+                      onClick={e => e.stopPropagation()}
+                    >
+                      <Info className="w-4 h-4 text-gray-700" />
+                      <div className="flex flex-col">
+                        <span>Repositories: Chatbot UI & API</span>
+                        <span>Get Commits Insights</span>
+                      </div>
+                    </div>,
+                    document.body
+                  )}
                 {/* <div className="bg-accent/20 rounded-lg p-3 text-sm">
                   <div className="flex items-center gap-2 mb-1">
                     <Zap className="w-4 h-4 text-orange-500" />
@@ -694,7 +766,7 @@ export const HomePage: React.FC = () => {
 
                 <div className="space-y-4 mb-12">
                   <h2 className="text-7xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-transparent bg-clip-text">
-                    OmniMind
+                    OmniPulse
                   </h2>
                   <div className="inline-flex items-center px-4 py-2 bg-primary/5 rounded-full text-sm text-primary gap-2">
                     <Bot className="w-4 h-4" />
@@ -897,7 +969,9 @@ export const HomePage: React.FC = () => {
         >
           {/* Input Row */}
           <div className="border-t border-gray-200">
-            <div className="p-6"> {/* Increased vertical padding using Tailwind */}
+            <div className="p-6">
+              {' '}
+              {/* Increased vertical padding using Tailwind */}
               <div className="relative flex items-center gap-2">
                 <div className="relative flex-1 rounded-xl border-2 border-blue-500 bg-white shadow-sm">
                   <div className="flex items-center min-h-1">
