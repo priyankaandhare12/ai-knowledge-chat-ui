@@ -157,6 +157,98 @@ src/
 - `npm run format` - Format code with Prettier
 - `npm run format:check` - Check code formatting
 
+## 🧪 Testing & Coverage
+
+### Running Tests
+
+```bash
+# Run all tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests with coverage report
+npm run test:coverage
+
+# Quick coverage check (no watch mode)
+npm test -- --coverage --watchAll=false
+
+# Run specific test file
+npm test -- --testPathPattern=HomePage.test.tsx
+
+# Run tests matching a pattern
+npm test -- --testNamePattern="should render"
+
+# Run UI component tests only
+npm run test:ui
+
+# Run service layer tests only
+npm run test:services
+```
+
+### Current Test Coverage
+
+![Coverage Status](https://img.shields.io/badge/coverage-68.13%25-orange) ![Tests](https://img.shields.io/badge/tests-203%2F235%20passing-green) ![Test Suites](https://img.shields.io/badge/suites-9%2F12%20passing-yellow)
+
+| Metric         | Current | Target | Status             |
+| -------------- | ------- | ------ | ------------------ |
+| **Statements** | 68.13%  | 80%    | 🟡 In Progress     |
+| **Branches**   | 72.72%  | 75%    | 🟡 Close to Target |
+| **Functions**  | 56.09%  | 80%    | 🔴 Needs Work      |
+| **Lines**      | 69.08%  | 80%    | 🟡 In Progress     |
+
+### Test Statistics
+
+- **Total Tests**: 235
+- **Passing Tests**: 203 (86.4% pass rate)
+- **Failing Tests**: 32
+- **Test Suites Passing**: 9/12
+
+### Coverage by Component
+
+| Component         | Statements | Branches | Functions | Lines  |
+| ----------------- | ---------- | -------- | --------- | ------ |
+| **UI Components** | 100%       | 100%     | 100%      | 100%   |
+| **Pages**         | 87.24%     | 86.36%   | 90.62%    | 88.33% |
+| **Contexts**      | 88.88%     | 50%      | 84.61%    | 88.23% |
+| **Services**      | 44.95%     | 22.72%   | 48.38%    | 44.95% |
+
+### How to Check Coverage
+
+1. **Generate coverage report**:
+
+   ```bash
+   npm test -- --coverage --watchAll=false
+   ```
+
+2. **View detailed HTML report**:
+
+   ```bash
+   npm test -- --coverage --watchAll=false
+   open coverage/lcov-report/index.html
+   ```
+
+3. **Coverage files are generated in**:
+   - `coverage/` - HTML reports
+   - `coverage/lcov-report/index.html` - Interactive coverage explorer
+
+### Testing Strategy
+
+- **Unit Tests**: Individual component and function testing
+- **Integration Tests**: Component interaction testing
+- **UI Testing**: User interaction and accessibility testing
+- **API Testing**: Service layer and HTTP client testing
+
+### Test Configuration
+
+Tests are configured with:
+
+- **Jest** - Test runner and framework
+- **React Testing Library** - Component testing utilities
+- **User Event** - User interaction simulation
+- **jsdom** - DOM environment for testing
+
 ## 📦 API Integration
 
 The application includes a complete API setup with:

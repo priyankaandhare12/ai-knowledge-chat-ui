@@ -22,7 +22,6 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
-import { AttachedFiles } from '@/components/ui/AttachedFiles';
 import { useAuth } from '@/contexts/AuthContext';
 import { apiClient } from '@/services/api.service';
 
@@ -152,19 +151,6 @@ export const HomePage: React.FC = () => {
 
   const handleFileIconClick = () => {
     fileInputRef.current?.click();
-  };
-
-  const handleRemoveFile = (fileId: string) => {
-    setAttachedFiles(prev => prev.filter(file => file.id !== fileId));
-    if (selectedFileId === fileId) {
-      setSelectedFileId(null);
-    }
-  };
-
-  const handleFileClick = (file: AttachedFile) => {
-    // Create a temporary URL for the PDF file
-    const fileUrl = URL.createObjectURL(file.file);
-    window.open(fileUrl, '_blank');
   };
 
   const handleSendMessage = async () => {
@@ -377,6 +363,7 @@ export const HomePage: React.FC = () => {
           size="icon"
           onClick={toggleSidebar}
           className="absolute -right-4 top-6 h-8 w-8 rounded-full border shadow-md bg-background z-50"
+          aria-label="Toggle sidebar"
         >
           {isSidebarCollapsed ? (
             <ChevronRight className="h-4 w-4" />
@@ -437,6 +424,15 @@ export const HomePage: React.FC = () => {
                   </div>
                   <p className="text-xs text-muted-foreground">Upload and analyze documents</p>
                 </div>
+                <div className="bg-accent/20 rounded-lg p-3 text-sm">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Slack className="w-4 h-4 text-purple-500" />
+                    <span className="font-medium">Slack Integration</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Search through project discussions
+                  </p>
+                </div>
               </div>
             </div>
           )}
@@ -466,22 +462,7 @@ export const HomePage: React.FC = () => {
                 )}
               </div>
             </div>
-            <div
-              className={`w-full h-auto py-3 ${isSidebarCollapsed ? 'px-0' : 'px-3'} opacity-60`}
-            >
-              <div className="flex items-center gap-2">
-                <Slack className="w-4 h-4 text-purple-500 flex-shrink-0" />
-                {!isSidebarCollapsed && (
-                  <div className="text-left flex-1">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">Slack</span>
-                      <Lock className="w-3 h-3 text-muted-foreground" />
-                    </div>
-                    <div className="text-xs text-muted-foreground">Coming soon</div>
-                  </div>
-                )}
-              </div>
-            </div>
+
             <div
               className={`w-full h-auto py-3 ${isSidebarCollapsed ? 'px-0' : 'px-3'} opacity-60`}
             >
@@ -527,13 +508,6 @@ export const HomePage: React.FC = () => {
         </div>
       </motion.div>
 
-      {/* Attached Files */}
-      <AttachedFiles
-        files={attachedFiles}
-        onRemoveFile={handleRemoveFile}
-        onFileClick={handleFileClick}
-      />
-
       {/* Main Chat Area - Adjusted for fixed sidebar */}
       <div
         className={`flex flex-col flex-1 h-screen transition-all duration-300 ${
@@ -543,7 +517,7 @@ export const HomePage: React.FC = () => {
         {messages.length === 0 ? (
           // Empty State with Enhanced Branding
           <div className="flex-1 flex items-center justify-center p-6">
-            <div className="max-w-2xl w-full">
+            <div className="max-w-3xl w-full">
               <div className="text-center">
                 <div className="mb-8 relative">
                   <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 rounded-full blur-3xl"></div>
@@ -561,13 +535,13 @@ export const HomePage: React.FC = () => {
                 </div>
 
                 <div className="max-w-2xl mx-auto">
-                  <div className="bg-gradient-to-b from-primary/5 to-transparent p-8 rounded-2xl backdrop-blur-sm">
+                  <div className="bg-gradient-to-b from-primary/5 to-transparent p-6 rounded-2xl backdrop-blur-sm">
                     <p className="text-xl text-primary/80 font-medium leading-relaxed mb-8">
                       Your AI companion for instant weather insights and document analysis. Ask
                       anything, get intelligent answers.
                     </p>
 
-                    <div className="grid grid-cols-2 gap-6">
+                    <div className="grid grid-cols-3 gap-6">
                       <div className="bg-white/50 p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-primary/10">
                         <Cloud className="w-8 h-8 text-blue-500 mb-3" />
                         <div className="font-semibold text-lg mb-2 text-primary">
@@ -584,6 +558,15 @@ export const HomePage: React.FC = () => {
                         </div>
                         <p className="text-muted-foreground">
                           Smart document processing with instant insights and summaries
+                        </p>
+                      </div>
+                      <div className="bg-white/50 p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-primary/10">
+                        <Slack className="w-8 h-8 text-purple-500 mb-3" />
+                        <div className="font-semibold text-lg mb-2 text-primary">
+                          Slack Integration
+                        </div>
+                        <p className="text-muted-foreground">
+                          Search through project discussions and team conversations
                         </p>
                       </div>
                     </div>
@@ -878,12 +861,14 @@ export const HomePage: React.FC = () => {
                     onChange={handleFileUpload}
                     className="hidden"
                     disabled={isUploading || isTyping}
+                    aria-label="Upload file"
                   />
                 </div>
                 <Button
                   onClick={handleSendMessage}
                   disabled={!inputValue.trim() || isTyping || !isAuthenticated}
                   className="h-[44px] px-4"
+                  aria-label="Send message"
                 >
                   {isTyping ? (
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
