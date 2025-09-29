@@ -9,126 +9,54 @@ export interface DocSection {
 export const documentationStructure: DocSection[] = [
   {
     id: 'overview',
-    title: 'Project Overview',
+    title: 'Overview',
     path: '/docs',
     icon: '📋',
-    children: [
-      {
-        id: 'introduction',
-        title: 'Introduction',
-        path: '/docs/overview/introduction',
-      },
-      {
-        id: 'project-goals',
-        title: 'Project Goals',
-        path: '/docs/overview/goals',
-      },
-      {
-        id: 'tech-stack',
-        title: 'Technology Stack',
-        path: '/docs/overview/tech-stack',
-      },
-    ],
-  },
-  {
-    id: 'getting-started',
-    title: 'Getting Started',
-    path: '/docs/getting-started',
-    icon: '🚀',
-    children: [
-      {
-        id: 'quick-start',
-        title: 'Quick Start Guide',
-        path: '/docs/getting-started/quick-start',
-      },
-      {
-        id: 'installation',
-        title: 'Installation',
-        path: '/docs/getting-started/installation',
-      },
-      {
-        id: 'environment-setup',
-        title: 'Environment Setup',
-        path: '/docs/getting-started/environment-setup',
-      },
-      {
-        id: 'cheat-sheet',
-        title: 'Command Cheat Sheet',
-        path: '/docs/getting-started/cheat-sheet',
-      },
-    ],
+    // No children: single page only
   },
   {
     id: 'architecture',
     title: 'Architecture',
     path: '/docs/architecture',
-    icon: '🏗️',
+    icon: '🧩',
     children: [
       {
-        id: 'system-overview',
-        title: 'System Overview',
-        path: '/docs/architecture/system-overview',
-      },
-      {
         id: 'frontend-architecture',
-        title: 'Frontend Architecture',
+        title: 'Frontend',
         path: '/docs/architecture/frontend',
       },
       {
         id: 'backend-architecture',
-        title: 'Backend Architecture',
+        title: 'Backend',
         path: '/docs/architecture/backend',
       },
       {
         id: 'database-design',
-        title: 'Database Design',
+        title: 'Database',
         path: '/docs/architecture/database',
       },
     ],
   },
   {
     id: 'features',
-    title: 'Features',
+    title: 'Integrations',
     path: '/docs/features',
     icon: '⚡',
     children: [
       {
-        id: 'authentication',
-        title: 'Authentication (Auth0)',
-        path: '/docs/features/authentication',
-      },
-      {
-        id: 'weather-integration',
-        title: 'Weather API Integration',
-        path: '/docs/features/weather',
-      },
-      {
         id: 'slack-integration',
-        title: 'Slack Integration',
+        title: 'Slack',
         path: '/docs/features/slack',
       },
       {
-        id: 'file-upload',
-        title: 'File Upload & Processing',
-        path: '/docs/features/file-upload',
-      },
-    ],
-  },
-  {
-    id: 'api-reference',
-    title: 'API Reference',
-    path: '/docs/api',
-    icon: '📡',
-    children: [
-      {
-        id: 'authentication-endpoints',
-        title: 'Authentication Endpoints',
-        path: '/docs/api/authentication',
+        id: 'github-integration',
+        title: 'GitHub',
+        path: '/docs/features/github',
       },
       {
-        id: 'chat-endpoints',
-        title: 'Chat Endpoints',
-        path: '/docs/api/chat',
+        id: 'jira-integration',
+        title: 'Jira',
+        path: '/docs/features/jira',
       },
     ],
   },
@@ -140,26 +68,31 @@ export const documentationStructure: DocSection[] = [
     children: [
       {
         id: 'vercel-deployment',
-        title: 'Vercel Deployment',
+        title: 'Vercel',
         path: '/docs/deployment/vercel',
       },
     ],
   },
   {
     id: 'development',
-    title: 'Development',
+    title: 'Testing',
     path: '/docs/development',
     icon: '💻',
     children: [
       {
         id: 'development-guide',
-        title: 'Development Guide',
+        title: 'Unit Testing',
         path: '/docs/development/guide',
       },
       {
         id: 'qa-automation',
-        title: 'QA Automation',
+        title: 'Automation',
         path: '/docs/development/qa-automation',
+      },
+      {
+        id: 'langsmith-testing',
+        title: 'LangSmith Monitoring',
+        path: '/docs/development/langsmith',
       },
     ],
   },
@@ -175,6 +108,13 @@ export const documentationStructure: DocSection[] = [
         path: '/docs/security/overview',
       },
     ],
+  },
+  {
+    id: 'ai-tools',
+    title: 'AI Tools',
+    path: '/docs/ai-tools',
+    icon: '🤖',
+    // No children
   },
 ];
 

@@ -1,144 +1,58 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Rocket, Shield, Zap, Code, BookOpen, Settings, ExternalLink } from 'lucide-react';
+import { Github, Cloud, FileText, Slack, Zap, User } from 'lucide-react';
 
 export const DocsHomePage: React.FC = () => {
   return (
     <div className="space-y-8">
       {/* Hero Section */}
       <div className="text-center space-y-4">
-        <h1 className="text-4xl font-bold text-gray-900">Universal Knowledge Chatbot</h1>
+        <h1 className="text-7xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-transparent bg-clip-text">
+          OmniPulse
+        </h1>
         <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-          Comprehensive documentation for the AI-powered chatbot that makes complex information
-          easily accessible through natural conversation.
+          Comprehensive documentation for the Universal Knowledge AI Assistant, delivering insights
+          from all your connected sources!
         </p>
-        <div className="flex justify-center space-x-4">
-          <Link
-            to="/docs/getting-started/quick-start"
-            className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            <Rocket className="h-5 w-5 mr-2" />
-            Quick Start
-          </Link>
-          <Link
-            to="/home"
-            className="inline-flex items-center px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-          >
-            <ExternalLink className="h-5 w-5 mr-2" />
-            Try the App
-          </Link>
-        </div>
       </div>
+      {/* Features Overview */}
+      {/* Features Overview / Tagline */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-4">
+        <h2 className="text-xl font-semibold mb-4 text-gray-900 flex items-center">
+          Your AI companion for instant insights from all your connected sources:
+        </h2>
 
-      {/* Feature Highlights */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-          <div className="flex items-center space-x-3 mb-4">
-            <Zap className="h-8 w-8 text-blue-500" />
-            <h3 className="text-lg font-semibold">Multiple Integrations</h3>
-          </div>
-          <p className="text-gray-600">
-            Weather API, Slack integration, file upload processing, and more external data sources.
-          </p>
-          <Link
-            to="/docs/features"
-            className="inline-flex items-center mt-3 text-blue-600 hover:text-blue-800"
-          >
-            Explore Features →
-          </Link>
-        </div>
-
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-          <div className="flex items-center space-x-3 mb-4">
-            <Shield className="h-8 w-8 text-green-500" />
-            <h3 className="text-lg font-semibold">Secure Authentication</h3>
-          </div>
-          <p className="text-gray-600">
-            Enterprise-grade Auth0 SSO with Google login, JWT tokens, and HTTP-only cookies.
-          </p>
-          <Link
-            to="/docs/security"
-            className="inline-flex items-center mt-3 text-blue-600 hover:text-blue-800"
-          >
-            Security Guide →
-          </Link>
-        </div>
-
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-          <div className="flex items-center space-x-3 mb-4">
-            <Code className="h-8 w-8 text-purple-500" />
-            <h3 className="text-lg font-semibold">Modern Tech Stack</h3>
-          </div>
-          <p className="text-gray-600">
-            React 18, TypeScript, Express.js, LangChain, OpenAI, and Vector databases.
-          </p>
-          <Link
-            to="/docs/architecture"
-            className="inline-flex items-center mt-3 text-blue-600 hover:text-blue-800"
-          >
-            Architecture →
-          </Link>
-        </div>
-      </div>
-
-      {/* Quick Navigation */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h2 className="text-2xl font-semibold mb-6">Quick Navigation</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium text-gray-900 flex items-center">
-              <BookOpen className="h-5 w-5 mr-2" />
-              Getting Started
-            </h3>
-            <ul className="space-y-2 text-gray-600">
-              <li>
-                <Link to="/docs/getting-started/installation" className="hover:text-blue-600">
-                  • Installation Guide
-                </Link>
-              </li>
-              <li>
-                <Link to="/docs/getting-started/environment-setup" className="hover:text-blue-600">
-                  • Environment Setup
-                </Link>
-              </li>
-              <li>
-                <Link to="/docs/getting-started/cheat-sheet" className="hover:text-blue-600">
-                  • Command Cheat Sheet
-                </Link>
-              </li>
-            </ul>
+        <div className="space-y-3">
+          <div className="flex items-center space-x-3">
+            <Cloud className="h-5 w-5 text-blue-500" />
+            <span>Connects with Weather API to provide real-time insights</span>
           </div>
 
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium text-gray-900 flex items-center">
-              <Settings className="h-5 w-5 mr-2" />
-              Configuration
-            </h3>
-            <ul className="space-y-2 text-gray-600">
-              <li>
-                <Link to="/docs/deployment/environment" className="hover:text-blue-600">
-                  • Environment Variables
-                </Link>
-              </li>
-              <li>
-                <Link to="/docs/security/auth0-setup" className="hover:text-blue-600">
-                  • Auth0 Configuration
-                </Link>
-              </li>
-              <li>
-                <Link to="/docs/deployment/vercel" className="hover:text-blue-600">
-                  • Vercel Deployment
-                </Link>
-              </li>
-            </ul>
+          <div className="flex items-center space-x-3">
+            <FileText className="h-5 w-5 text-purple-500" />
+            <span>Upload PDF files and query them with AI</span>
+          </div>
+
+          <div className="flex items-center space-x-3">
+            <Slack className="h-5 w-5 text-green-500" />
+            <span>Integrated with Slack for knowledge chatbot updates</span>
+          </div>
+
+          <div className="flex items-center space-x-3">
+            <Github className="h-5 w-5 text-gray-800" />
+            <span>Connects with GitHub to track repo commits</span>
+          </div>
+
+          <div className="flex items-center space-x-3">
+            <Zap className="h-5 w-5 text-orange-500" />
+            <span>Integrated with Jira to provide project insights</span>
           </div>
         </div>
       </div>
 
-      {/* Project Stats */}
+      {/* Project Highlights (Moved to Top) */}
       <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6">
-        <h2 className="text-2xl font-semibold mb-4 text-gray-900">Project Overview</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+        <h2 className="text-2xl font-semibold mb-4 text-gray-900">Core Technologies</h2>
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-center">
           <div className="space-y-2">
             <div className="text-2xl font-bold text-blue-600">React + TS</div>
             <div className="text-sm text-gray-600">Frontend</div>
@@ -148,12 +62,129 @@ export const DocsHomePage: React.FC = () => {
             <div className="text-sm text-gray-600">Backend API</div>
           </div>
           <div className="space-y-2">
-            <div className="text-2xl font-bold text-purple-600">LangChain</div>
+            <div className="text-2xl font-bold text-purple-600">LangGraph</div>
             <div className="text-sm text-gray-600">AI Framework</div>
           </div>
           <div className="space-y-2">
             <div className="text-2xl font-bold text-orange-600">Auth0</div>
             <div className="text-sm text-gray-600">Authentication</div>
+          </div>
+          <div className="space-y-2">
+            <div className="text-2xl font-bold text-teal-600">Pinecone</div>
+            <div className="text-sm text-gray-600">Vector DB</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Repositories Section */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-4">
+        <h2 className="text-2xl font-semibold mb-4 text-gray-900 flex items-center">
+          <Github className="h-6 w-6 mr-2" />
+          GitHub Repositories
+        </h2>
+
+        <div className="space-y-3">
+          <div className="p-4 border border-gray-200 rounded-lg">
+            <div className="text-lg font-bold text-gray-900">AI Knowledge Chat UI</div>
+            <div className="text-sm text-gray-600 mb-2">Frontend Interface</div>
+            <a
+              href="https://github.com/priyankaandhare12/ai-knowledge-chat-ui"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 underline hover:text-blue-800 transition-colors text-sm font-medium"
+            >
+              Visit
+            </a>
+          </div>
+
+          <div className="p-4 border border-gray-200 rounded-lg">
+            <div className="text-lg font-bold text-gray-900">Knowledge Chatbot</div>
+            <div className="text-sm text-gray-600 mb-2">Backend AI Bot</div>
+            <a
+              href="https://github.com/priyankaandhare12/knowledge-chatbot"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 underline hover:text-blue-800 transition-colors text-sm font-medium"
+            >
+              Visit
+            </a>
+          </div>
+
+          <div className="p-4 border border-gray-200 rounded-lg">
+            <div className="text-lg font-bold text-gray-900">Automation</div>
+            <div className="text-sm text-gray-600 mb-2">Automation Scripts</div>
+            <a
+              href="https://github.com/nayanagrawal-tech9/ai-knowledge-automation"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 underline hover:text-blue-800 transition-colors text-sm font-medium"
+            >
+              Visit
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Deployments Section */}
+      {/* Deployments Section */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-4">
+        <h2 className="text-2xl font-semibold mb-4 text-gray-900 flex items-center">
+          🌐
+          <span className="ml-2">Deployments</span>
+        </h2>
+
+        <div className="space-y-3">
+          <div className="p-4 border border-gray-200 rounded-lg">
+            <div className="text-lg font-bold text-gray-900">AI Knowledge Chat UI</div>
+            <div className="text-sm text-gray-600 mb-2">Frontend Deployment</div>
+            <a
+              href="https://ai-knowledge-chat-ui.vercel.app/login"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 underline hover:text-blue-800 transition-colors text-sm font-medium"
+            >
+              Visit
+            </a>
+          </div>
+
+          <div className="p-4 border border-gray-200 rounded-lg">
+            <div className="text-lg font-bold text-gray-900">Knowledge Chatbot</div>
+            <div className="text-sm text-gray-600 mb-2">Backend Deployment</div>
+            <a
+              href="https://knowledge-chatbot-pi.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 underline hover:text-blue-800 transition-colors text-sm font-medium"
+            >
+              Visit
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-4">
+        <h2 className="text-2xl font-semibold mb-4 text-gray-900 flex items-center">
+          <User className="h-6 w-6 mr-2" />
+          Project Contributors
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Contributor 1 */}
+          <div className="flex items-center space-x-3 p-4 border border-gray-200 rounded-lg hover:shadow-sm transition-shadow">
+            <User className="h-5 w-5 text-blue-500" />
+            <span className="text-gray-900 font-medium">Govind Kumar</span>
+          </div>
+
+          {/* Contributor 2 */}
+          <div className="flex items-center space-x-3 p-4 border border-gray-200 rounded-lg hover:shadow-sm transition-shadow">
+            <User className="h-5 w-5 text-green-500" />
+            <span className="text-gray-900 font-medium">Priyanka Andhare</span>
+          </div>
+
+          {/* Contributor 3 */}
+          <div className="flex items-center space-x-3 p-4 border border-gray-200 rounded-lg hover:shadow-sm transition-shadow">
+            <User className="h-5 w-5 text-purple-500" />
+            <span className="text-gray-900 font-medium">Nayan Agarwal</span>
           </div>
         </div>
       </div>
