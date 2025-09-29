@@ -110,11 +110,24 @@ export const documentationStructure: DocSection[] = [
     ],
   },
   {
-    id: 'ai-tools',
-    title: 'AI Tools',
-    path: '/docs/ai-tools',
+    id: 'tools',
+    title: 'AI',
+    path: '/docs/tools',
     icon: '🤖',
     // No children
+
+    children: [
+      {
+        id: 'ai-tools',
+        title: 'Tools Used',
+        path: '/docs/tools/ai-tools',
+      },
+      {
+        id: 'sample-queries',
+        title: 'Sample Queries',
+        path: '/docs/tools/sample-queries',
+      },
+    ],
   },
 ];
 

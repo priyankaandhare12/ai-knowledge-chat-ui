@@ -17,6 +17,7 @@ import { FeaturesPage } from '@/pages/docs/FeaturesPage';
 import { ArchitecturePage } from '@/pages/docs/ArchitecturePage';
 import { QAAutomation } from '@/pages/docs/QAAutomation';
 import AIToolsPage from '@/pages/docs/AIToolsPage';
+import SampleQueriesPage from '@/pages/docs/SampleQueriesPage';
 
 // Architecture pages
 import FrontendArchitecturePage from '@/pages/docs/architecture/FrontendArchitecturePage';
@@ -130,7 +131,8 @@ function App() {
               <Route path="security/overview" element={<SecurityOverviewPage />} />
 
               {/* AI Tools */}
-              <Route path="ai-tools" element={<AIToolsPage />} />
+              <Route path="tools/ai-tools" element={<AIToolsPage />} />
+              <Route path="tools/sample-queries" element={<SampleQueriesPage />} />
 
               {/* Fallback for unmatched docs routes */}
               <Route path="*" element={<Navigate to="/docs" replace />} />
