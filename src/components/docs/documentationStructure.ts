@@ -44,6 +44,11 @@ export const documentationStructure: DocSection[] = [
     icon: '⚡',
     children: [
       {
+        id: 'weather-integration',
+        title: 'Weather API',
+        path: '/docs/features/weather',
+      },
+      {
         id: 'slack-integration',
         title: 'Slack',
         path: '/docs/features/slack',
