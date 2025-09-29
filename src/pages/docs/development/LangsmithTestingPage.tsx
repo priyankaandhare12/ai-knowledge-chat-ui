@@ -9,19 +9,6 @@ export const LangsmithTestingPage: React.FC = () => {
         </h1>
         <div className="prose prose-lg max-w-none">
           <div className="bg-white border border-gray-200 rounded-lg p-6 mb-8">
-            <p className="text-gray-700 mb-2">
-              <strong>Vercel</strong> is a cloud platform for hosting both static websites and
-              serverless functions. It enables automatic, continuous deployments from your GitHub
-              repositories, making it easy to push changes without manual configuration.
-            </p>
-            <p className="text-gray-700">
-              In this project, both the frontend and backend are deployed on Vercel. Auto-deployment
-              is configured for the main branch of each repository, ensuring that any changes pushed
-              to GitHub are instantly reflected in the live applications.
-            </p>
-          </div>
-
-          <div className="bg-white border border-gray-200 rounded-lg p-6 mb-8">
             <p className="text-xl text-gray-600 leading-relaxed">
               LangSmith is <strong>mandatory</strong> for tracing, monitoring, and debugging every
               LLM-powered workflow. Every request and chain execution is traced to provide full
