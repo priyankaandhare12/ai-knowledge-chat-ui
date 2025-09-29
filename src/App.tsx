@@ -16,14 +16,9 @@ import { CheatSheetPage } from '@/pages/docs/CheatSheetPage';
 import { FeaturesPage } from '@/pages/docs/FeaturesPage';
 import { ArchitecturePage } from '@/pages/docs/ArchitecturePage';
 import { QAAutomation } from '@/pages/docs/QAAutomation';
-
-// Overview pages
-import IntroductionPage from '@/pages/docs/overview/IntroductionPage';
-import ProjectGoalsPage from '@/pages/docs/overview/ProjectGoalsPage';
-import TechStackPage from '@/pages/docs/overview/TechStackPage';
+import AIToolsPage from '@/pages/docs/AIToolsPage';
 
 // Architecture pages
-import SystemOverviewPage from '@/pages/docs/architecture/SystemOverviewPage';
 import FrontendArchitecturePage from '@/pages/docs/architecture/FrontendArchitecturePage';
 import BackendArchitecturePage from '@/pages/docs/architecture/BackendArchitecturePage';
 import DatabaseDesignPage from '@/pages/docs/architecture/DatabaseDesignPage';
@@ -32,6 +27,8 @@ import DatabaseDesignPage from '@/pages/docs/architecture/DatabaseDesignPage';
 import AuthenticationPage from '@/pages/docs/features/AuthenticationPage';
 import WeatherIntegrationPage from '@/pages/docs/features/WeatherIntegrationPage';
 import SlackIntegrationPage from '@/pages/docs/features/SlackIntegrationPage';
+import GithubIntegrationPage from '@/pages/docs/features/GithubIntegrationPage';
+import JiraIntegrationPage from '@/pages/docs/features/JiraIntegrationPage';
 
 // API Reference pages
 import APIReferencePage from '@/pages/docs/api/APIReferencePage';
@@ -49,6 +46,7 @@ import SecurityOverviewPage from '@/pages/docs/security/SecurityOverviewPage';
 
 // Development pages
 import DevelopmentGuidePage from '@/pages/docs/development/DevelopmentGuidePage';
+import LangsmithTestingPage from '@/pages/docs/development/LangsmithTestingPage';
 
 import { validateConfig } from '@/config';
 
@@ -93,11 +91,6 @@ function App() {
             <Route path="/docs" element={<DocsLayout />}>
               <Route index element={<DocsHomePage />} />
 
-              {/* Overview */}
-              <Route path="overview/introduction" element={<IntroductionPage />} />
-              <Route path="overview/goals" element={<ProjectGoalsPage />} />
-              <Route path="overview/tech-stack" element={<TechStackPage />} />
-
               {/* Getting Started */}
               <Route path="getting-started/quick-start" element={<QuickStartPage />} />
               <Route path="getting-started/installation" element={<InstallationPage />} />
@@ -106,7 +99,6 @@ function App() {
 
               {/* Architecture */}
               <Route path="architecture" element={<ArchitecturePage />} />
-              <Route path="architecture/system-overview" element={<SystemOverviewPage />} />
               <Route path="architecture/frontend" element={<FrontendArchitecturePage />} />
               <Route path="architecture/backend" element={<BackendArchitecturePage />} />
               <Route path="architecture/database" element={<DatabaseDesignPage />} />
@@ -116,6 +108,8 @@ function App() {
               <Route path="features/authentication" element={<AuthenticationPage />} />
               <Route path="features/weather" element={<WeatherIntegrationPage />} />
               <Route path="features/slack" element={<SlackIntegrationPage />} />
+              <Route path="features/github" element={<GithubIntegrationPage />} />
+              <Route path="features/jira" element={<JiraIntegrationPage />} />
               <Route path="features/file-upload" element={<FileUploadPage />} />
 
               {/* API Reference */}
@@ -130,9 +124,13 @@ function App() {
               {/* Development */}
               <Route path="development/guide" element={<DevelopmentGuidePage />} />
               <Route path="development/qa-automation" element={<QAAutomation />} />
+              <Route path="development/langsmith" element={<LangsmithTestingPage />} />
 
               {/* Security */}
               <Route path="security/overview" element={<SecurityOverviewPage />} />
+
+              {/* AI Tools */}
+              <Route path="ai-tools" element={<AIToolsPage />} />
 
               {/* Fallback for unmatched docs routes */}
               <Route path="*" element={<Navigate to="/docs" replace />} />

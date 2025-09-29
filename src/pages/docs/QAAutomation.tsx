@@ -15,7 +15,7 @@ export const QAAutomation: React.FC = () => {
       description="Complete test automation framework with enterprise-grade security, reporting, and CI/CD integration for Gmail SSO authentication"
       lastUpdated="September 28, 2025"
       backLink="/docs/development"
-      backLinkText="Back to Development"
+      // backLinkText="Back to Development"
     >
       <div className="space-y-8">
         <Alert type="info">
